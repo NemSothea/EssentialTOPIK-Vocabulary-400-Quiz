@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korean Vocabulary Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            background-image: linear-gradient(to bottom right, #f8f9ff, #eef2ff);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            overflow: hidden;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .instructions h3 {
+            color: #2980b9;
+            margin-bottom: 8px;
+        }
+        
+        .correction-note {
+            background-color: #fff8e1;
+            border: 1px solid #ffd54f;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+        
+        .correction-note strong {
+            color: #f57c00;
+        }
+        
+        .quiz-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .question {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #3498db;
+            transition: all 0.3s ease;
+        }
+        
+        .question:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .question-number {
+            font-weight: bold;
+            color: #3498db;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        @media (min-width: 600px) {
+            .options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #f0f7ff;
+            border-color: #3498db;
+        }
+        
+        .option.selected {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+        
+        .option.correct {
+            background-color: #2ecc71;
+            color: white;
+            border-color: #27ae60;
+        }
+        
+        .option.incorrect {
+            background-color: #e74c3c;
+            color: white;
+            border-color: #c0392b;
+        }
+        
+        .fill-blank {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .fill-blank input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            width: 200px;
+            font-size: 1rem;
+            margin: 5px 10px;
+        }
+        
+        .fill-blank input.correct-answer {
+            border-color: #2ecc71;
+            background-color: #eafaf1;
+        }
+        
+        .fill-blank input.incorrect-answer {
+            border-color: #e74c3c;
+            background-color: #fdeaea;
+        }
+        
+        .translation-section {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .translation-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-top: 10px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 15px 40px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #resetBtn {
+            background-color: #7f8c8d;
+        }
+        
+        #resetBtn:hover {
+            background-color: #5d6b6c;
+        }
+        
+        .results {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .results h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #3498db;
+            margin: 20px 0;
+        }
+        
+        .score-text {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+        }
+        
+        .answers-review {
+            text-align: left;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .vocabulary-list {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .vocabulary-list h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .word-item {
+            padding: 12px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .korean {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        
+        .english {
+            color: #7f8c8d;
+        }
+        
+        .correct-word {
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .incorrect-word {
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .correct-feedback {
+            background-color: #d5f4e6;
+            color: #27ae60;
+        }
+        
+        .incorrect-feedback {
+            background-color: #fadbd8;
+            color: #c0392b;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            button {
+                display: block;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Korean Vocabulary Quiz</h1>
+            <p class="subtitle">Test your knowledge of Korean vocabulary with this interactive quiz</p>
+        </header>
+        
+        <div class="instructions">
+            <h3>How to take the quiz:</h3>
+            <p>1. Answer all multiple choice questions by clicking on the correct option.</p>
+            <p>2. For fill-in-the-blank questions, type the correct Korean word.</p>
+            <p>3. For translation questions, write the translation in the provided box.</p>
+            <p>4. Click "Check Answers" when you're finished to see your score and feedback.</p>
+        </div>
+        
+        <div class="correction-note">
+            <p><strong>Note:</strong> In the original list, there was a translation error. <strong>예방하다</strong> means "to prevent" (not "accurate"), and <strong>적확하다</strong> means "accurate". This has been corrected in the quiz.</p>
+        </div>
+        
+        <div class="quiz-section">
+            <div class="section-title">
+                <h2>Part A: Multiple Choice Questions</h2>
+                <span>5 Questions</span>
+            </div>
+            
+            <!-- Question 1 -->
+            <div class="question" id="q1">
+                <div class="question-number">Question 1</div>
+                <div class="question-text">What is the correct Korean word for "to apply"?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">반복하다</div>
+                    <div class="option" data-correct="true">적용하다</div>
+                    <div class="option" data-correct="false">제시하다</div>
+                    <div class="option" data-correct="false">소통하다</div>
+                </div>
+                <div class="feedback correct-feedback">Correct! 적용하다 means "to apply".</div>
+                <div class="feedback incorrect-feedback">Incorrect. The correct answer is 적용하다.</div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question" id="q2">
+                <div class="question-number">Question 2</div>
+                <div class="question-text">What is the Korean word for "freedom"?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">기술</div>
+                    <div class="option" data-correct="false">비결</div>
+                    <div class="option" data-correct="true">자유</div>
+                    <div class="option" data-correct="false">기회</div>
+                </div>
+                <div class="feedback correct-feedback">Correct! 자유 means "freedom".</div>
+                <div class="feedback incorrect-feedback">Incorrect. The correct answer is 자유.</div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question" id="q3">
+                <div class="question-number">Question 3</div>
+                <div class="question-text">Which Korean verb means "to prevent"?</div>
+                <div class="options">
+                    <div class="option" data-correct="true">예방하다</div>
+                    <div class="option" data-correct="false">거절하다</div>
+                    <div class="option" data-correct="false">시작하다</div>
+                    <div class="option" data-correct="false">반복하다</div>
+                </div>
+                <div class="feedback correct-feedback">Correct! 예방하다 means "to prevent".</div>
+                <div class="feedback incorrect-feedback">Incorrect. The correct answer is 예방하다.</div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question" id="q4">
+                <div class="question-number">Question 4</div>
+                <div class="question-text">What is the Korean word for "opportunity"?</div>
+                <div class="options">
+                    <div class="option" data-correct="true">기회</div>
+                    <div class="option" data-correct="false">비결</div>
+                    <div class="option" data-correct="false">기술</div>
+                    <div class="option" data-correct="false">자유</div>
+                </div>
+                <div class="feedback correct-feedback">Correct! 기회 means "opportunity".</div>
+                <div class="feedback incorrect-feedback">Incorrect. The correct answer is 기회.</div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question" id="q5">
+                <div class="question-number">Question 5</div>
+                <div class="question-text">Which Korean verb means "to present/propose"?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">소통하다</div>
+                    <div class="option" data-correct="false">적용하다</div>
+                    <div class="option" data-correct="true">제시하다</div>
+                    <div class="option" data-correct="false">반복하다</div>
+                </div>
+                <div class="feedback correct-feedback">Correct! 제시하다 means "to present/propose".</div>
+                <div class="feedback incorrect-feedback">Incorrect. The correct answer is 제시하다.</div>
+            </div>
+        </div>
+        
+        <div class="quiz-section">
+            <div class="section-title">
+                <h2>Part B: Fill in the Blanks</h2>
+                <span>4 Questions</span>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="fill-blank" id="q6">
+                <div class="question-number">Question 6</div>
+                <div class="question-text">회의 전에 카메라와 마이크를 확인하는 것은 중요한 <input type="text" id="blank1" placeholder="Korean word"> 이다. (technology)</div>
+            </div>
+            
+            <!-- Question 7 -->
+            <div class="fill-blank" id="q7">
+                <div class="question-number">Question 7</div>
+                <div class="question-text">친구들과 잘 <input type="text" id="blank2" placeholder="Korean verb"> 야 이해가 생깁니다. (communicate)</div>
+            </div>
+            
+            <!-- Question 8 -->
+            <div class="fill-blank" id="q8">
+                <div class="question-number">Question 8</div>
+                <div class="question-text">그릇을 씻지 않고 며칠 놔뒀더니 정말 <input type="text" id="blank3" placeholder="Korean adjective"> 졌다. (dirty)</div>
+            </div>
+            
+            <!-- Question 9 -->
+            <div class="fill-blank" id="q9">
+                <div class="question-number">Question 9</div>
+                <div class="question-text">지금부터 새로운 프로젝트를 <input type="text" id="blank4" placeholder="Korean verb"> 겠습니다. (start)</div>
+            </div>
+        </div>
+        
+        <div class="quiz-section">
+            <div class="section-title">
+                <h2>Part C: Translation</h2>
+                <span>2 Questions</span>
+            </div>
+            
+            <!-- Question 10 -->
+            <div class="translation-section" id="q10">
+                <div class="question-number">Question 10</div>
+                <div class="question-text">Translate this sentence into English: "그는 기회를 거절했어요."</div>
+                <textarea class="translation-input" id="translation1" placeholder="Type your English translation here..."></textarea>
+            </div>
+            
+            <!-- Question 11 -->
+            <div class="translation-section" id="q11">
+                <div class="question-number">Question 11</div>
+                <div class="question-text">Translate this sentence into Korean: "Please apply this rule accurately."</div>
+                <textarea class="translation-input" id="translation2" placeholder="Type your Korean translation here..."></textarea>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button id="checkBtn">Check Answers</button>
+            <button id="resetBtn">Reset Quiz</button>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>Quiz Results</h2>
+            <div class="score" id="score">0/11</div>
+            <div class="score-text" id="scoreText"></div>
+            
+            <div class="answers-review">
+                <h3>Answers Review:</h3>
+                <div id="answersList"></div>
+            </div>
+        </div>
+        
+        <div class="vocabulary-list">
+            <h3>Vocabulary Reference List (Corrected)</h3>
+            <div class="word-grid" id="vocabList">
+                <!-- Vocabulary items will be generated by JavaScript -->
+            </div>
+        </div>
+        
+        <footer>
+            <p>Korean Vocabulary Quiz | Created for language learners</p>
+        </footer>
+    </div>
+
+    <script>
+        // Vocabulary data (corrected)
+        const vocabulary = [
+            { korean: "적용하다", english: "apply" },
+            { korean: "반복하다", english: "repeat" },
+            { korean: "소통하다", english: "communicate" },
+            { korean: "더럽다", english: "dirty" },
+            { korean: "제시하다", english: "present" },
+            { korean: "거절하다", english: "refuse" },
+            { korean: "예방하다", english: "prevent" },
+            { korean: "적확하다", english: "accurate" },
+            { korean: "기술", english: "technology" },
+            { korean: "자유", english: "freedom" },
+            { korean: "성급하다", english: "hasty" },
+            { korean: "기회", english: "opportunity" },
+            { korean: "비결", english: "secret" },
+            { korean: "시작하다", english: "start" }
+        ];
+        
+        // Correct answers for the quiz
+        const correctAnswers = {
+            // Multiple choice
+            q1: "적용하다",
+            q2: "자유",
+            q3: "예방하다",
+            q4: "기회",
+            q5: "제시하다",
+            
+            // Fill in the blanks
+            blank1: "기술",
+            blank2: "소통하다",
+            blank3: "더럽다",
+            blank4: "시작하다",
+            
+            // Translation
+            translation1: ["He refused the opportunity", "He refused the opportunity."],
+            translation2: ["이 규칙을 정확하게 적용해 주세요", "이 규칙을 적확하게 적용해 주세요"]
+        };
+        
+        // Initialize the vocabulary list
+        function initVocabularyList() {
+            const vocabList = document.getElementById('vocabList');
+            vocabList.innerHTML = '';
+            
+            vocabulary.forEach(word => {
+                const wordItem = document.createElement('div');
+                wordItem.className = 'word-item';
+                wordItem.innerHTML = `
+                    <div class="korean">${word.korean}</div>
+                    <div class="english">${word.english}</div>
+                `;
+                vocabList.appendChild(wordItem);
+            });
+        }
+        
+        // Set up event listeners for multiple choice questions
+        function setupMultipleChoice() {
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from siblings
+                    const siblings = this.parentElement.children;
+                    for (let sibling of siblings) {
+                        sibling.classList.remove('selected');
+                    }
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                });
+            });
+        }
+        
+        // Check the answers
+        function checkAnswers() {
+            let score = 0;
+            const totalQuestions = 11;
+            
+            // Check multiple choice questions
+            for (let i = 1; i <= 5; i++) {
+                const question = document.getElementById(`q${i}`);
+                const selectedOption = question.querySelector('.option.selected');
+                const correctOption = question.querySelector('.option[data-correct="true"]');
+                const correctAnswer = correctAnswers[`q${i}`];
+                
+                // Show feedback
+                const correctFeedback = question.querySelector('.correct-feedback');
+                const incorrectFeedback = question.querySelector('.incorrect-feedback');
+                
+                if (selectedOption) {
+                    if (selectedOption.getAttribute('data-correct') === 'true') {
+                        selectedOption.classList.add('correct');
+                        correctFeedback.style.display = 'block';
+                        incorrectFeedback.style.display = 'none';
+                        score++;
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        correctOption.classList.add('correct');
+                        correctFeedback.style.display = 'none';
+                        incorrectFeedback.style.display = 'block';
+                    }
+                } else {
+                    // If no option selected, show correct answer
+                    correctOption.classList.add('correct');
+                    correctFeedback.style.display = 'none';
+                    incorrectFeedback.style.display = 'block';
+                }
+            }
+            
+            // Check fill in the blanks
+            const blankAnswers = {
+                blank1: "기술",
+                blank2: "소통하다",
+                blank3: "더럽다",
+                blank4: "시작하다"
+            };
+            
+            for (let i = 1; i <= 4; i++) {
+                const input = document.getElementById(`blank${i}`);
+                const userAnswer = input.value.trim();
+                const correctAnswer = blankAnswers[`blank${i}`];
+                
+                if (userAnswer === correctAnswer) {
+                    input.classList.add('correct-answer');
+                    input.classList.remove('incorrect-answer');
+                    score++;
+                } else {
+                    input.classList.add('incorrect-answer');
+                    input.classList.remove('correct-answer');
+                }
+            }
+            
+            // Check translations
+            // Question 10
+            const translation1 = document.getElementById('translation1');
+            const userTranslation1 = translation1.value.trim().toLowerCase();
+            const isTranslation1Correct = correctAnswers.translation1.some(answer => 
+                userTranslation1 === answer.toLowerCase()
+            );
+            
+            if (isTranslation1Correct) {
+                translation1.classList.add('correct-answer');
+                translation1.classList.remove('incorrect-answer');
+                score++;
+            } else {
+                translation1.classList.add('incorrect-answer');
+                translation1.classList.remove('correct-answer');
+            }
+            
+            // Question 11
+            const translation2 = document.getElementById('translation2');
+            const userTranslation2 = translation2.value.trim();
+            const isTranslation2Correct = correctAnswers.translation2.some(answer => 
+                userTranslation2 === answer
+            );
+            
+            if (isTranslation2Correct) {
+                translation2.classList.add('correct-answer');
+                translation2.classList.remove('incorrect-answer');
+                score++;
+            } else {
+                translation2.classList.add('incorrect-answer');
+                translation2.classList.remove('correct-answer');
+            }
+            
+            // Show results
+            showResults(score, totalQuestions);
+        }
+        
+        // Show results
+        function showResults(score, total) {
+            const results = document.getElementById('results');
+            const scoreElement = document.getElementById('score');
+            const scoreText = document.getElementById('scoreText');
+            const answersList = document.getElementById('answersList');
+            
+            // Calculate percentage
+            const percentage = Math.round((score / total) * 100);
+            
+            // Update score display
+            scoreElement.textContent = `${score}/${total}`;
+            
+            // Set score text based on performance
+            let performanceText = '';
+            if (percentage >= 90) {
+                performanceText = 'Excellent! You have a great understanding of these Korean words.';
+            } else if (percentage >= 70) {
+                performanceText = 'Good job! You know most of these vocabulary words.';
+            } else if (percentage >= 50) {
+                performanceText = 'Not bad! Keep practicing to improve your Korean vocabulary.';
+            } else {
+                performanceText = 'Keep studying! Review the vocabulary list and try again.';
+            }
+            
+            scoreText.textContent = performanceText;
+            
+            // Generate answers review
+            answersList.innerHTML = `
+                <p><strong>Multiple Choice Answers:</strong></p>
+                <ul>
+                    <li>1. 적용하다 (apply)</li>
+                    <li>2. 자유 (freedom)</li>
+                    <li>3. 예방하다 (prevent)</li>
+                    <li>4. 기회 (opportunity)</li>
+                    <li>5. 제시하다 (present)</li>
+                </ul>
+                <p><strong>Fill in the Blanks Answers:</strong></p>
+                <ul>
+                    <li>6. 기술 (technology)</li>
+                    <li>7. 소통하다 (communicate)</li>
+                    <li>8. 더럽다 (dirty)</li>
+                    <li>9. 시작하다 (start)</li>
+                </ul>
+                <p><strong>Translation Answers:</strong></p>
+                <ul>
+                    <li>10. "He refused the opportunity." (그는 기회를 거절했어요.)</li>
+                    <li>11. "이 규칙을 정확하게 적용해 주세요." (Please apply this rule accurately.)</li>
+                </ul>
+            `;
+            
+            // Show results section
+            results.style.display = 'block';
+            
+            // Scroll to results
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Reset the quiz
+        function resetQuiz() {
+            // Reset multiple choice
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Reset feedback
+            const feedbacks = document.querySelectorAll('.feedback');
+            feedbacks.forEach(feedback => {
+                feedback.style.display = 'none';
+            });
+            
+            // Reset fill in the blanks
+            const inputs = document.querySelectorAll('input[type="text"], textarea');
+            inputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('correct-answer', 'incorrect-answer');
+            });
+            
+            // Hide results
+            document.getElementById('results').style.display = 'none';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Initialize the quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            initVocabularyList();
+            setupMultipleChoice();
+            
+            // Add event listeners to buttons
+            document.getElementById('checkBtn').addEventListener('click', checkAnswers);
+            document.getElementById('resetBtn').addEventListener('click', resetQuiz);
+        });
+    </script>
+</body>
+</html>
