@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korean Vocabulary Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #4e54c8, #8f94fb);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.4rem;
+        }
+        
+        .subtitle {
+            margin-top: 8px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .vocabulary-list {
+            background-color: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid #4e54c8;
+        }
+        
+        .vocabulary-list h2 {
+            margin-top: 0;
+            color: #4e54c8;
+        }
+        
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .vocab-item {
+            padding: 12px 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eaeaea;
+        }
+        
+        .korean {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .english {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .quiz-section {
+            background-color: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .quiz-section h2 {
+            margin-top: 0;
+            color: #4e54c8;
+        }
+        
+        .quiz-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .quiz-btn {
+            padding: 10px 20px;
+            background-color: white;
+            border: 2px solid #4e54c8;
+            color: #4e54c8;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-btn:hover, .quiz-btn.active {
+            background-color: #4e54c8;
+            color: white;
+        }
+        
+        .quiz-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            min-height: 300px;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #eaeaea;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #f5f7ff;
+            border-color: #8f94fb;
+        }
+        
+        .option.selected {
+            background-color: #e6e9ff;
+            border-color: #4e54c8;
+        }
+        
+        .option.correct {
+            background-color: #e7f7ef;
+            border-color: #2ecc71;
+        }
+        
+        .option.incorrect {
+            background-color: #fdeaea;
+            border-color: #e74c3c;
+        }
+        
+        .result {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .result.correct {
+            background-color: #e7f7ef;
+            color: #27ae60;
+            display: block;
+        }
+        
+        .result.incorrect {
+            background-color: #fdeaea;
+            color: #e74c3c;
+            display: block;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .control-btn {
+            padding: 12px 25px;
+            background-color: #4e54c8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .control-btn:hover {
+            background-color: #3a3f9e;
+        }
+        
+        .control-btn:disabled {
+            background-color: #a0a4d9;
+            cursor: not-allowed;
+        }
+        
+        .score {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4e54c8;
+        }
+        
+        .instructions {
+            background-color: #f0f2ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .vocab-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quiz-type-selector {
+                justify-content: center;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Korean Vocabulary Quiz</h1>
+            <div class="subtitle">Practice and test your knowledge of Korean vocabulary</div>
+        </header>
+        
+        <div class="content">
+            <div class="vocabulary-list">
+                <h2>Vocabulary List</h2>
+                <p>Study these 15 words before taking the quiz:</p>
+                <div class="vocab-grid" id="vocabList">
+                    <!-- Vocabulary list will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="quiz-section">
+                <h2>Quiz</h2>
+                <div class="quiz-type-selector">
+                    <button class="quiz-btn active" data-type="korean-to-english">Korean → English</button>
+                    <button class="quiz-btn" data-type="english-to-korean">English → Korean</button>
+                    <button class="quiz-btn" data-type="fill-in-blank">Fill in the Blank</button>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="question" id="question"></div>
+                    
+                    <div class="options" id="options"></div>
+                    
+                    <div class="result" id="result"></div>
+                    
+                    <div class="controls">
+                        <button class="control-btn" id="checkBtn" disabled>Check Answer</button>
+                        <button class="control-btn" id="nextBtn">Next Question</button>
+                        <div class="score">Score: <span id="score">0</span>/<span id="total">0</span></div>
+                    </div>
+                    
+                    <div class="instructions" id="instructions">
+                        Select a quiz type and choose the correct answer for each question. Click "Check Answer" to verify your response, then "Next Question" to continue.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Korean Vocabulary Quiz App • Created to help with language learning</p>
+        </footer>
+    </div>
+
+    <script>
+        // Vocabulary data
+        const vocabulary = [
+            { korean: "생물", english: "living thing" },
+            { korean: "의사 소통", english: "communication" },
+            { korean: "급변하다", english: "change rapidly" },
+            { korean: "봉사하다", english: "serve" },
+            { korean: "적응하다", english: "adapt" },
+            { korean: "대책", english: "measure" },
+            { korean: "협의하다", english: "discuss" },
+            { korean: "마침내", english: "finally" },
+            { korean: "발명하다", english: "invent" },
+            { korean: "A보다 B가 더 ..", english: "B is more… than A" },
+            { korean: "장점", english: "strength" },
+            { korean: "접수하다", english: "receive" },
+            { korean: "촉구하다", english: "urge" },
+            { korean: "게으르다", english: "lazy" },
+            { korean: "지속하다", english: "continue" }
+        ];
+
+        // DOM elements
+        const vocabListEl = document.getElementById('vocabList');
+        const quizTypeButtons = document.querySelectorAll('.quiz-btn');
+        const questionEl = document.getElementById('question');
+        const optionsEl = document.getElementById('options');
+        const resultEl = document.getElementById('result');
+        const checkBtn = document.getElementById('checkBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const scoreEl = document.getElementById('score');
+        const totalEl = document.getElementById('total');
+        const instructionsEl = document.getElementById('instructions');
+
+        // Quiz state variables
+        let currentQuizType = 'korean-to-english';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let totalAnswered = 0;
+        let selectedOption = null;
+        let questions = [];
+        
+        // Initialize the app
+        function init() {
+            populateVocabularyList();
+            setupQuizTypeButtons();
+            generateQuestions();
+            displayQuestion();
+            updateScore();
+            
+            // Event listeners
+            checkBtn.addEventListener('click', checkAnswer);
+            nextBtn.addEventListener('click', nextQuestion);
+        }
+        
+        // Populate the vocabulary list
+        function populateVocabularyList() {
+            vocabListEl.innerHTML = '';
+            
+            vocabulary.forEach(vocab => {
+                const vocabItem = document.createElement('div');
+                vocabItem.className = 'vocab-item';
+                vocabItem.innerHTML = `
+                    <div class="korean">${vocab.korean}</div>
+                    <div class="english">${vocab.english}</div>
+                `;
+                vocabListEl.appendChild(vocabItem);
+            });
+        }
+        
+        // Set up quiz type buttons
+        function setupQuizTypeButtons() {
+            quizTypeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    quizTypeButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    // Update quiz type
+                    currentQuizType = button.getAttribute('data-type');
+                    // Reset quiz
+                    resetQuiz();
+                    generateQuestions();
+                    displayQuestion();
+                    updateInstructions();
+                });
+            });
+        }
+        
+        // Generate questions based on quiz type
+        function generateQuestions() {
+            questions = [];
+            
+            // Create a copy of vocabulary to work with
+            let vocabPool = [...vocabulary];
+            
+            // For each word in vocabulary, create a question
+            vocabulary.forEach((vocab, index) => {
+                let question, correctAnswer, options;
+                
+                if (currentQuizType === 'korean-to-english') {
+                    question = `What does "${vocab.korean}" mean in English?`;
+                    correctAnswer = vocab.english;
+                    
+                    // Generate options (correct answer + 3 random wrong answers)
+                    options = [correctAnswer];
+                    while (options.length < 4) {
+                        const randomVocab = vocabulary[Math.floor(Math.random() * vocabulary.length)];
+                        if (!options.includes(randomVocab.english) && randomVocab.english !== correctAnswer) {
+                            options.push(randomVocab.english);
+                        }
+                    }
+                    
+                } else if (currentQuizType === 'english-to-korean') {
+                    question = `What is the Korean word for "${vocab.english}"?`;
+                    correctAnswer = vocab.korean;
+                    
+                    // Generate options (correct answer + 3 random wrong answers)
+                    options = [correctAnswer];
+                    while (options.length < 4) {
+                        const randomVocab = vocabulary[Math.floor(Math.random() * vocabulary.length)];
+                        if (!options.includes(randomVocab.korean) && randomVocab.korean !== correctAnswer) {
+                            options.push(randomVocab.korean);
+                        }
+                    }
+                    
+                } else if (currentQuizType === 'fill-in-blank') {
+                    // Create fill-in-the-blank questions
+                    const sentenceTemplates = [
+                        `The Korean word for "${vocab.english}" is __________.`,
+                        `"${vocab.korean}" means __________ in English.`,
+                        `__________ is the English translation of "${vocab.korean}".`
+                    ];
+                    
+                    const templateIndex = index % sentenceTemplates.length;
+                    question = sentenceTemplates[templateIndex].replace('__________', '_______');
+                    
+                    if (templateIndex === 0 || templateIndex === 2) {
+                        correctAnswer = vocab.korean;
+                    } else {
+                        correctAnswer = vocab.english;
+                    }
+                    
+                    // Generate options
+                    options = [correctAnswer];
+                    while (options.length < 4) {
+                        let randomAnswer;
+                        if (templateIndex === 0 || templateIndex === 2) {
+                            // Need Korean word options
+                            randomAnswer = vocabulary[Math.floor(Math.random() * vocabulary.length)].korean;
+                        } else {
+                            // Need English word options
+                            randomAnswer = vocabulary[Math.floor(Math.random() * vocabulary.length)].english;
+                        }
+                        
+                        if (!options.includes(randomAnswer) && randomAnswer !== correctAnswer) {
+                            options.push(randomAnswer);
+                        }
+                    }
+                }
+                
+                // Shuffle the options
+                options = shuffleArray(options);
+                
+                questions.push({
+                    question,
+                    correctAnswer,
+                    options,
+                    vocab
+                });
+            });
+            
+            // Shuffle the questions
+            questions = shuffleArray(questions);
+        }
+        
+        // Display the current question
+        function displayQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                currentQuestionIndex = 0;
+            }
+            
+            const currentQuestion = questions[currentQuestionIndex];
+            questionEl.textContent = currentQuestion.question;
+            
+            // Clear previous options
+            optionsEl.innerHTML = '';
+            selectedOption = null;
+            resultEl.className = 'result';
+            resultEl.textContent = '';
+            checkBtn.disabled = true;
+            
+            // Create option elements
+            currentQuestion.options.forEach((option, index) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'option';
+                optionEl.textContent = `${index + 1}. ${option}`;
+                optionEl.dataset.value = option;
+                
+                optionEl.addEventListener('click', () => {
+                    // Remove selected class from all options
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    optionEl.classList.add('selected');
+                    selectedOption = option;
+                    checkBtn.disabled = false;
+                });
+                
+                optionsEl.appendChild(optionEl);
+            });
+            
+            // Update instructions based on quiz type
+            updateInstructions();
+        }
+        
+        // Check the selected answer
+        function checkAnswer() {
+            if (selectedOption === null) return;
+            
+            const currentQuestion = questions[currentQuestionIndex];
+            const isCorrect = selectedOption === currentQuestion.correctAnswer;
+            
+            // Show result
+            if (isCorrect) {
+                resultEl.textContent = "Correct! Well done!";
+                resultEl.className = 'result correct';
+                score++;
+            } else {
+                resultEl.textContent = `Incorrect. The correct answer is: ${currentQuestion.correctAnswer}`;
+                resultEl.className = 'result incorrect';
+            }
+            
+            totalAnswered++;
+            updateScore();
+            
+            // Highlight correct and incorrect options
+            document.querySelectorAll('.option').forEach(optionEl => {
+                const optionValue = optionEl.dataset.value;
+                if (optionValue === currentQuestion.correctAnswer) {
+                    optionEl.classList.add('correct');
+                } else if (optionValue === selectedOption && !isCorrect) {
+                    optionEl.classList.add('incorrect');
+                }
+            });
+            
+            checkBtn.disabled = true;
+        }
+        
+        // Move to the next question
+        function nextQuestion() {
+            currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+            displayQuestion();
+        }
+        
+        // Reset the quiz
+        function resetQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            totalAnswered = 0;
+            selectedOption = null;
+            updateScore();
+        }
+        
+        // Update the score display
+        function updateScore() {
+            scoreEl.textContent = score;
+            totalEl.textContent = totalAnswered;
+        }
+        
+        // Update instructions based on quiz type
+        function updateInstructions() {
+            let instructions = '';
+            
+            if (currentQuizType === 'korean-to-english') {
+                instructions = 'Select the correct English translation for the Korean word shown.';
+            } else if (currentQuizType === 'english-to-korean') {
+                instructions = 'Select the correct Korean word for the English meaning shown.';
+            } else if (currentQuizType === 'fill-in-blank') {
+                instructions = 'Select the correct word to complete the sentence.';
+            }
+            
+            instructionsEl.textContent = instructions;
+        }
+        
+        // Utility function to shuffle an array
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+        
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
