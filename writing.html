@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOPIK Writing Complete Practice Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c5aa0;
+            --secondary-color: #e63946;
+            --accent-color: #457b9d;
+            --light-color: #f1faee;
+            --dark-color: #1d3557;
+            --success-color: #2a9d8f;
+            --warning-color: #f4a261;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .quiz-area {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quiz-title {
+            color: var(--dark-color);
+            font-size: 1.5rem;
+        }
+
+        .quiz-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .quiz-meta span {
+            background-color: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--accent-color);
+            white-space: pre-line;
+        }
+
+        .blank {
+            background-color: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+
+        .answer-area {
+            margin: 2rem 0;
+        }
+
+        .answer-box {
+            margin-bottom: 1.5rem;
+        }
+
+        .answer-label {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-color);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #21867a;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #e76f51;
+        }
+
+        .sidebar {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar h3 {
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .topik-list {
+            list-style: none;
+            margin-bottom: 2rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .topik-item {
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topik-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        .topik-item.active {
+            background-color: #e3f2fd;
+            border-color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .topik-number {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .question-type {
+            font-size: 0.85rem;
+            background-color: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .sample-answers {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .sample-answers.active {
+            display: block;
+        }
+
+        .sample-title {
+            color: var(--success-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sample-answer {
+            background-color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--success-color);
+        }
+
+        .answer-highlight {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .stats {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .quiz-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+
+            .quiz-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        .hint {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .hint i {
+            margin-top: 2px;
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .difficulty.easy {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .difficulty.medium {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty.hard {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .question-counter {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+        }
+
+        .score-value {
+            color: var(--success-color);
+        }
+
+        .answer-status {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .status-correct {
+            color: var(--success-color);
+        }
+
+        .status-incorrect {
+            color: var(--secondary-color);
+        }
+
+        .status-unanswered {
+            color: #6c757d;
+        }
+
+        .search-box {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            background-color: #e9ecef;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .filter-btn:hover {
+            background-color: #dee2e6;
+        }
+
+        .filter-btn.active:hover {
+            background-color: var(--dark-color);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-pen-fancy"></i>
+                    <div>
+                        <h1>TOPIK Writing Complete Practice</h1>
+                        <!-- UPDATED: Changed from 52 to 54 -->
+                        <div class="subtitle">All 54 Questions from Your File</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="question-count">1</div>
+                        <div class="stat-label">Question</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="total-questions">54</div> <!-- Updated to 54 -->
+                        <div class="stat-label">Total</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="correct-count">0</div>
+                        <div class="stat-label">Correct</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="score-percentage">0%</div>
+                        <div class="stat-label">Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="quiz-area">
+                <div class="quiz-header">
+                    <div>
+                        <h2 class="quiz-title">Question <span id="current-question">1</span> - TOPIK Writing</h2>
+                        <div class="question-counter" id="question-info">TOPIK 52 - Question 51</div>
+                    </div>
+                    <div class="quiz-meta">
+                        <span id="topik-number">TOPIK 52</span>
+                        <span id="question-type">51번</span>
+                        <span class="difficulty medium" id="difficulty">Medium</span>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+
+                <div class="answer-status">
+                    <div class="status-item status-correct">
+                        <i class="fas fa-check-circle"></i> <span id="correct-count-display">0</span> Correct
+                    </div>
+                    <div class="status-item status-incorrect">
+                        <i class="fas fa-times-circle"></i> <span id="incorrect-count-display">0</span> Incorrect
+                    </div>
+                    <div class="status-item status-unanswered">
+                        <i class="fas fa-question-circle"></i> <span id="unanswered-count-display">54</span> Unanswered <!-- Updated to 54 -->
+                    </div>
+                </div>
+
+                <div class="question-text" id="question-text">
+                    수미 씨, 지난번에 책을 ( ㄱ ) 고맙습니다. 수미 씨의 책 덕분에 과제를 잘할 수 있었습니다. 그런데 책을 언제 ( ㄴ )? 시간을 말씀해 주시면 찾아가겠습니다. 그럼 답장
+                    기다리겠습니다.
+                </div>
+
+                <div class="hint">
+                    <i class="fas fa-lightbulb"></i> <strong>Hint:</strong> Write one complete sentence for each blank
+                    (ㄱ) and (ㄴ). Pay attention to honorifics and appropriate endings.
+                </div>
+
+                <div class="answer-area">
+                    <div class="answer-box">
+                        <div class="answer-label">
+                            <i class="fas fa-edit"></i> (ㄱ) Your Answer
+                        </div>
+                        <input type="text" class="answer-input" id="answer-a"
+                            placeholder="Type your answer for (ㄱ) here...">
+                    </div>
+
+                    <div class="answer-box">
+                        <div class="answer-label">
+                            <i class="fas fa-edit"></i> (ㄴ) Your Answer
+                        </div>
+                        <input type="text" class="answer-input" id="answer-b"
+                            placeholder="Type your answer for (ㄴ) here...">
+                    </div>
+                </div>
+
+                <div class="quiz-controls">
+                    <button class="btn btn-secondary" id="prev-btn">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <div>
+                        <button class="btn btn-warning" id="skip-btn">
+                            <i class="fas fa-forward"></i> Skip
+                        </button>
+                        <button class="btn btn-primary" id="check-btn">
+                            <i class="fas fa-check-circle"></i> Check Answers
+                        </button>
+                    </div>
+                    <button class="btn btn-success" id="next-btn">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="sample-answers" id="sample-answers">
+                    <h3 class="sample-title">
+                        <i class="fas fa-star"></i> Sample Answers
+                    </h3>
+                    <div class="sample-answer">
+                        <strong>(ㄱ):</strong> <span class="answer-highlight" id="sample-a">빌려 줘서 / 빌려 주셔서</span>
+                    </div>
+                    <div class="sample-answer">
+                        <strong>(ㄴ):</strong> <span class="answer-highlight" id="sample-b">돌려주면 됩니까 / 돌려 드리면
+                            되겠습니까</span>
+                    </div>
+                    <div class="hint">
+                        <i class="fas fa-info-circle"></i> <strong>Note:</strong> These are sample answers. Your answer
+                        may vary but should be grammatically correct and contextually appropriate.
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="search-box">
+                    <input type="text" class="search-input" id="search-input" placeholder="Search questions...">
+                </div>
+
+                <div class="filter-options">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="51">51번</button>
+                    <button class="filter-btn" data-filter="52">52번</button>
+                    <button class="filter-btn" data-filter="unanswered">Unanswered</button>
+                    <button class="filter-btn" data-filter="answered">Answered</button>
+                </div>
+
+                <h3><i class="fas fa-list"></i> All TOPIK Questions</h3>
+                <ul class="topik-list" id="topik-list">
+                    <!-- TOPIK list will be populated by JavaScript -->
+                </ul>
+
+                <h3><i class="fas fa-trophy"></i> Your Progress</h3>
+                <div class="hint">
+                    <!-- UPDATED: Changed from 52 to 54 -->
+                    <strong>Questions Completed:</strong> <span id="completed-count">0</span>/54
+                </div>
+                <div class="hint">
+                    <strong>Current Score:</strong> <span id="current-score">0%</span>
+                </div>
+
+                <h3><i class="fas fa-tips"></i> Quick Tips</h3>
+                <div class="hint">
+                    <strong>1. Context Matters:</strong> Understand the situation before answering.
+                </div>
+                <div class="hint">
+                    <strong>2. Formal vs Informal:</strong> Match the formality level of the text.
+                </div>
+                <div class="hint">
+                    <strong>3. Complete Sentences:</strong> Ensure your answers are full sentences.
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <!-- UPDATED: Changed from 52 to 54 -->
+            <p>TOPIK Writing Complete Practice App • All 54 questions from your file • Use for educational purposes only
+            </p>
+            <p>Based on actual TOPIK exam materials from 52nd to 102nd exams</p>
+        </div>
+    </div>
+
+    <script>
+        // Parse all TOPIK questions from the file content
+        const topikExams = [
+            // TOPIK 52nd
+            {
+                id: 1,
+                number: "52nd",
+                type: "51번",
+                question: "수미 씨, 지난번에 책을 ( ㄱ ) 고맙습니다. 수미 씨의 책 덕분에 과제를 잘할 수 있었습니다. 그런데 책을 언제 ( ㄴ )? 시간을 말씀해 주시면 찾아가겠습니다. 그럼 답장 기다리겠습니다.",
+                answers: {
+                    a: "빌려 줘서 / 빌려 주셔서",
+                    b: "돌려주면 됩니까 / 돌려 드리면 되겠습니까"
+                },
+                difficulty: "medium"
+            },
+            {
+                id: 2,
+                number: "52nd",
+                type: "52번",
+                question: "우리는 기분이 좋으면 밝은 표정을 짓는다. 그리고 기분이 좋지 않으면 표정이 어두워진다. 왜냐하면 ( ㄱ ). 그런데 이와 반대로 표정이 우리의 감정에 영향을 주기도 한다. 그래서 기분이 안 좋을 때 밝은 표정을 지으면 기분도 따라서 좋아진다. 그러므로 우울할 때일수록 ( ㄴ ) 것이 좋다.",
+                answers: {
+                    a: "감정이 표정에 영향을 주기 때문이다",
+                    b: "밝은 표정을 짓는 / 표정을 밝게 짓는"
+                },
+                difficulty: "easy"
+            },
+            // TOPIK 78th
+            {
+                id: 3,
+                number: "78th",
+                type: "51번",
+                question: "제목: 주문 변경 요청. 안녕하세요? 저는 어제 노란색 원피스 옷을 주문했습니다. 그런데 빨간색 옷으로 바꾸고 싶습니다. 혹시 빨간색으로 주문을 ( ㄱ )? 가능하면 바꾸셔 보내 주십시오. 네. 가능합니다. 그러면 빨간색 옷으로 바꿔서 ( ㄴ ).",
+                answers: {
+                    a: "변경해도 되겠습니까? / 변경할 수 있습니까? / 바꿀 수 있습니까?",
+                    b: "보내 드리겠습니다."
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 4,
+                number: "78th",
+                type: "52번",
+                question: "사람은 나이가 들면서 머리가 하얘지기도 하지만 심한 스트레스로 흰머리가 ( ㄱ ). 스트레스로 흰머리가 생기는 것은 검은색 머리에서 만드는 가능이 일시적으로 잘못되어 나타나는 증상이다. 그러나 이렇게 생긴 흰머리는 스트레스가 해소되면 다시 검은색으로 돌아온다. 왜냐하면 스트레스가 없어지면 그로 인해 나타났던 문제도 함께 ( ㄴ ).",
+                answers: {
+                    a: "생기기도 한다 / 생길 수 있기도 한다.",
+                    b: "없어지기 때문이다 / 사라지기 때문이다."
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 66th
+            {
+                id: 5,
+                number: "66th",
+                type: "51번",
+                question: "공지 제목: 취업 특강에 초대합니다. 유학생회에서 취업 특강을 준비했습니다. 특강에 오면 취업에 성공한 선배들의 이야기를 (ᄀ). 특강후 선배와 상담도 가능하니 참석을 원하는 분은 이메일로 ( ᄂ). 일시 및 장소: 10월10일 오후5시, 학생회관101호 이메일: global@hankook.ac.kr",
+                answers: {
+                    a: "들을 수 있습니다. / 들을 기회가 있습니다. / 들을 수 있는 자리가 마련되어있습니다.",
+                    b: "연락/신청해 주시기 바랍니다. / 연락해 주십시오. / 말씀해 주시기 바랍니다."
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 6,
+                number: "66th",
+                type: "52번",
+                question: "사람들은 산을 보면 안정감을 느낀다. 그 이유는 녹색이 사람의 마음을 편안하게 해 주기 때문이다. 그런데 녹색이 단지 사람의 마음만 편하게 ( ㄱ ). 예전부터 어른들은 책을 많이 보는 아이에게 가끔씩 산을 ( ㄴ ). 이는 녹색이 눈의 피로도 풀어주기 때문이다.",
+                answers: {
+                    a: "해주는 것이아니다",
+                    b: "보라고 말씀하셨다./보라고 말씀해 주셨다."
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 81st
+            {
+                id: 7,
+                number: "81st",
+                type: "51번",
+                question: "제목: 공연 티켓을 무료로 드립니다. 4월 16일 한강에서 K-POP 콘서트가 열릴 예정입니다. 정말 가 보고 싶었는데 그날 중요한 ( ㄱ ) 콘서트에 못 가게 되었습니다. 콘서트에 가고 싶으신 분은 저에게 문자를 ( ㄴ ). 제일 먼저 보낸 사람에게 티켓을 보내드리겠습니다.",
+                answers: {
+                    a: "일이 생겨서 / 일이 있으니까",
+                    b: "보내십시오 / 보내주십시오 / 보내면 됩니다"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 8,
+                number: "81st",
+                type: "52번",
+                question: "골프공은 다른 공과 달리 작은 구멍이 여러 개 있다. 구멍은 공이 멀리 ( ㄱ ) 영향을 미친다. 공이 날아갈 때 공기의 마찰력을 받는데 구멍들이 힘을 줄어 주는 것이가. 이렇게 때문에 만약 공에 ( ㄴ ) 똑같은 힘으로 쳐도 멀리 날아지 못할 것이다",
+                answers: {
+                    a: "날아가는 것에 / 날아가는 데에 / 날아가는 거리에",
+                    b: "구멍이 없으면 / 구멍이 없다면"
+                },
+                difficulty: "hard"
+            },
+            // TOPIK 82nd
+            {
+                id: 9,
+                number: "82nd",
+                type: "51번",
+                question: "책상 판매합니다. / 가구 / 4 시간 전 ….. 50,000원 이사를 가게 돼서 판매합니다. 사용한 지 일년밖에 ( ㄱ ). 깨끗하게 사용해서 거의 새 책상 같습니다. 직접 보시면 분명 마음에 ( ㄴ ). 관심 있는 분은 연락 주십시오.",
+                answers: {
+                    a: "안 되었습니다. / 안 됩니다.",
+                    b: "들 겁니다 / 들 수 있을 겁니다 / 들 수 있을 것 같습니다."
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 10,
+                number: "82nd",
+                type: "52번",
+                question: "운동 중에 물을 마시면 운동 효과가 떨어진다고 생각하는 사람들이 있다. 그런데 물은 운동 효과를 높이는 주요한 역할을 한다. 그래서 운동할 때 물을 자주 마셔야 운동 효과를 ( ㄱ ). 이 때 따뜻한 물보다는 차가운 물을 ( ㄴ ). 차가운 물이 우리 몸에 더 빨리 흡수되기 때문이다.",
+                answers: {
+                    a: "높일 수 있다. / 높이는 데에 도움이 된다.",
+                    b: "마시면 더 좋다. / 마시면 효과가 더 높아진다. / 마시는 것이 좋다."
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 83rd
+            {
+                id: 11,
+                number: "83rd",
+                type: "51번",
+                question: "제목: 축제 관련 문의 지난 주말에 '별빛 축제'에 갔던 외국인입니다. 지금까지 살면서 이렇게 많은 별을 ( ㄱ ) 한 번도 없었습니다. 혹시 이런 축제가 또 있습니까? 있다면 이런 멋진 경험을 다시 ( ㄴ )",
+                answers: {
+                    a: "본 적이 / 본 경험이 / 구경한 적이 / 구경한 경험이",
+                    b: "해 보고 싶습니다 / 체험하고 싶습니다 / 체험하기를 원한다"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 12,
+                number: "83rd",
+                type: "52번",
+                question: "식물은 다양한 방법으로 자신을 보호한다. 덩굴성 야자나무는 빈 줄기를 개미에게 집으로 제공한다. 이 나무에 다른 동물이 다가오면 줄기에 있던 개미가 밖으로 나온다. 이때 개미의 움직임 때문에 소리가 생긴다. 이런 소리가 동물을 깜짝 ( ㄱ ). 결국 놀란 동물들은 나뭇잎을 먹지 못하고 달아나 버린다. 식물학자들은 이것이 바로 식물이 자신을 보호하는 ( ㄴ ).",
+                answers: {
+                    a: "놀라게 한다",
+                    b: "방법이라고 한다"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 102
+            {
+                id: 13,
+                number: "102",
+                type: "51번",
+                question: "제목: 개인 물건 정리 요청 안녕하세요. 동아리 회장 김민아입니다. 학생회관 공사 때문에 동아리 방을 옮기게 되었습니다. 그런데 현재 개인 물건들이 너무 많습니다. 동아리 방을 옮기려면 이 물건들부터 먼저 (ㄱ). 방학을 하자마자 공사가 시작됩니다. 방학이 (ㄴ) 개인 물건을 모두 가져가 주십시오.",
+                answers: {
+                    a: "정리해야 합니다. / 치워야 합니다. / 가져가야 합니다.",
+                    b: "시작되기 전에 / 시작되기 전까지 / 오기 전까지"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 14,
+                number: "102",
+                type: "52번",
+                question: "큰 항공기는 주로 높은 하늘에서 비행을 한다. 높이 올라가면 날씨의 영향을 별로 (ㄱ) 흔들림이 적다. 반면 작은 항공기는 날씨의 영향을 받더라도 낮은 고도에서 비행을 해야 한다. 왜냐하면 높은 고도에서 (ㄴ) 항공기의 엔진이 크고 중량이 많으며 연료도 많이 필요하기 때문이다.",
+                answers: {
+                    a: "받지 않아 / 받지 않아서 / 덜 받아",
+                    b: "비행하려고 / 비행하기 위해"
+                },
+                difficulty: "hard"
+            },
+            // TOPIK 101
+            {
+                id: 15,
+                number: "101",
+                type: "51번",
+                question: "이번주 토요일에 축구 경기가 있습니다. 응원해야 하니까 많은 학생이 (ㄱ). 참여할 학생은 학교 경기장에 오시기 바랍니다. 경기장에서 우리 팀을 (ㄴ) 학교 티셔츠를 입으려 고 합니다.",
+                answers: {
+                    a: "모일 예정입니다. / 참석할 것입니다. / 참여해 주시기 바랍니다.",
+                    b: "응원하기 위해 / 격려하기 위해 / 응원할 수 있도록"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 16,
+                number: "101",
+                type: "52번",
+                question: "두통이 낫지 않고 계속되면 진통제를 먹게 된다. 그러나 만성두통을 치료하려면 약을 계속 (ㄱ) 어디가 어떻게 아픈 지 살펴봐야 한다. 왜냐하면 아픈 위치나 특징에 따라 원인이 (ㄴ).",
+                answers: {
+                    a: "먹는 것보다 / 복용하기보다 / 먹기보다는 / 의존하기보다 / 먹지 말고",
+                    b: "다르기 때문이다 / 달라지기 때문이다 / 다를 수 있기 때문이다 / 달라질 수 있기 때문이다"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 100th
+            {
+                id: 17,
+                number: "100th",
+                type: "51번",
+                question: "안녕하세요? 취업을 준비 중인 취준생입니다. 이번에 회사에서 면접 시험에 오라는 연락이 왔습니다. 하지만 저는 채용 면접을 ( ㄱ ) 없습니다. 2주 후에 면접이 있는데 이번 주 안에 꼭 센터 선생님한테서 도움을 ( ㄴ ).",
+                answers: {
+                    a: "본 적이 / 본 경험이 / 해본 적이",
+                    b: "받고 싶습니다 / 받으려고 합니다 / 부탁드리고 싶습니다"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 18,
+                number: "100th",
+                type: "52번",
+                question: "벚꽃은 봄에 피는 꽃 중에서 가장 일찍 피는 꽃으로 유명하다. 보통 식물들은 잎이 난 후에 꽃이 피는데 벚꽃은 잎이 ( ㄱ ) 꽃이 핀다. 화려하고 큰 꽃이 많은 5월에는 벚꽃이 상대적으로 벌을 ( ㄴ ). 이와 같이 벚꽃이 이른 봄에 빨리 꽃이 피는 것은 벌을 더 많이 유혹하려는 벚꽃의 생존 전략이라 할 수 있다.",
+                answers: {
+                    a: "나기 전에 / 자라기 전에 / 생기기 전에",
+                    b: "유혹하기가 어렵다 / 유혹하기 쉽지 않다 / 유혹하기 어렵기 때문이다"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 99th
+            {
+                id: 19,
+                number: "99th",
+                type: "51번",
+                question: "신입생 여러분, 안녕하세요. 유학생 대표 마이콜입니다. 여러분이 우리 대학에 ( ㄱ ) 벌써 한 달이 되었습니다. 여러분을 축하하기 위해 이번 주 금요일 오후 3시에 환영회를 준비했습니다. 신입생을 위한 기념품도 있으니 많이 참석해 주십시오. 환영회에 ( ㄴ ) 분께는 다음 주에 기념품을 전달해 드리겠습니다.",
+                answers: {
+                    a: "입학하신 지 / 오신 지 / 다니신 지",
+                    b: "참석하지 못한 / 오지 못한 / 불참한"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 20,
+                number: "99th",
+                type: "52번",
+                question: "우리가 말할 때 듣는 소리와 녹음된 음성에서 듣는 소리와 다르게 느껴진다. 왜냐하면 녹음된 음성에서 들을 때와 말할 때 소리가 귀로 전달되는 방식이 ( ㄱ ). 녹음된 소리는 공기를 통해서만 귀로 전달된다. 그런데 말할 때의 소리는 ( ㄴ ) 머리뼈를 통해서도 전달된다. 이 두 가지 방식을 통해 귀로 전달되는 소리는 주파수와 소리의 두께에 대한 인식에 차이를 만든다. 소리가 머리뼈를 통해 전달될 때 낮은 주파수가 강조되어 우리 목소리가 실제보다 더 낮고 풍성하게 들린다.",
+                answers: {
+                    a: "다르기 때문이다",
+                    b: "공기를 통해서뿐만 아니라"
+                },
+                difficulty: "hard"
+            },
+            // TOPIK 92nd
+            {
+                id: 21,
+                number: "92nd",
+                type: "51번",
+                question: "선배님, 안녕하십니까? 마이클입니다. 제 결혼식에 와 주셔서 감사합니다. 사실 선배님께 축하를 받고 싶었지만 결혼식에 오시라는 말씀을 ( ㄱ ). 그런데 직접 오셔서 결혼을 ( ㄴ ), 선물까지 주셔서 정말 기뻤습니다. 다음에 아내와 같이 찾아뵙고 다시 인사를 드리겠습니다. 안녕히 계십시오.",
+                answers: {
+                    a: "드리지 못했습니다 / 전해 드리지 못했습니다",
+                    b: "축하해 주시고 / 축복해 주시고"
+                },
+                difficulty: "medium"
+            },
+            {
+                id: 22,
+                number: "92nd",
+                type: "52번",
+                question: "종이를 재활용 쓰레기로 버릴 때 종류에 상관없이 다 같이 모아서 버리는 사람들이 있다. 그런데 이는 올바른 방법이 아니다. 왜냐하면 종이는 종류에 따라 재활용 과정과 방법이 ( ㄱ ). 재활용 과정에서 종이가 섞여 있으면 분류하는 데 적지 않은 시간과 비용이 필요하다. 이런 비용과 시간을 줄이려면 종이를 버릴 때 비슷한 종이끼리 모아서 ( ㄴ ).",
+                answers: {
+                    a: "다르기 때문이다 / 달라지기 때문이다",
+                    b: "버리는 것이 좋다 / 버리는 것이 필요하다"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 98th
+            {
+                id: 23,
+                number: "98th",
+                type: "51번",
+                question: "안녕하십니까? 마리아입니다. 이번 유학생 모임에서 먹을 점심 메뉴를 ( ㄱ ). 갑자기 조사를 부탁드려 죄송합니다. 저번에 조사할 때 빠뜨렸습니다. 아래 사이트에서 원하는 메뉴를 고르신 후, 이 이메일로 ( ㄴ ) 감사하겠습니다.",
+                answers: {
+                    a: "조사하고 있습니다 / 조사하려고 합니다 / 조사하겠습니다",
+                    b: "보내 주시면 / 알려 주시면 / 작성해 주시면"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 24,
+                number: "98th",
+                type: "52번",
+                question: "구름이 하얗게 보이는 이유는 미 산란(Mie scattering)이라는 현상 때문이다. 미 산란은 빛이 퍼지고 퍼진 모든 빛이 섞이면서 흰색으로 보이는 현상을 말한다. 구름은 여러 크기의 물방울로 구성되어 있는데 이 물방울이 빛을 ( ㄱ ). 또한 이 물방울들이 다른 색깔의 모든 빛을 섞이게 한다. 따라서 구름이 하얗게 보이는 이유는 구름 속의 물방울에서 퍼진 빛들이 모두 ( ㄴ ).",
+                answers: {
+                    a: "퍼지게 한다",
+                    b: "섞이기 때문이다"
+                },
+                difficulty: "hard"
+            },
+            // TOPIK 97th
+            {
+                id: 25,
+                number: "97th",
+                type: "51번",
+                question: "이 책은 한국 문화에 대해 쉽게 설명되어 있습니다. 어휘와 문법이 어렵지 않습니다. 그래서 한국어를 ( ㄱ ) 얼마 안 된 외국인들도 읽을 수 있습니다. 저는 한국어를 잘 못하지만 재미있게 읽었습니다. 이 책을 꼭 한번 ( ㄴ ).",
+                answers: {
+                    a: "배운 지 / 시작한 지 / 공부한 지",
+                    b: "읽어 보십시오 / 읽어 보시기 바랍니다 / 읽어야 합니다."
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 26,
+                number: "97th",
+                type: "52번",
+                question: "옷에 고추 가루가 묻을 때 세탁해도 얼룩이 남는다. 고추 가루에 포함된 캡사이신 성분 때문이다. 이 성분은 기름에 녹지만 물에는 ( ㄱ ). 물로만 세탁하면 지우기 어렵다. 따라서 얼룩을 잘 ( ㄴ ) 세탁한 후에 햇빛이 있는 곳에 걸어 두면 이 성분이 사라지게 된다.",
+                answers: {
+                    a: "녹지 않는다 / 녹지 않기 때문이다 / 반응하지 않다",
+                    b: "지우려면 / 제거하려면 / 없애려면"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 96th
+            {
+                id: 27,
+                number: "96th",
+                type: "51번",
+                question: "제목: 어디로 이사하는 것이 좋을까요? 안녕하세요. 유학생입니다. 기숙사 생활이 불편해서 이번 방학에 이사를 ( ㄱ ). 집값이 싸고 깨끗한 동네면 좋겠습니다. 그런데 어느 ( ㄴ ) 모르겠습니다. 좋은 곳을 아시면 추천 부탁드립니다.",
+                answers: {
+                    a: "가려고 합니다. / 하려고 합니다. / 생각하고 있습니다.",
+                    b: "동네가 좋은지 / 곳이 좋은지 / 지역이 좋은지"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 28,
+                number: "96th",
+                type: "52번",
+                question: "개구리는 겨울에 추위를 피하기 위해 겨울 내에 긴 잠을 잔다고 하는 것을 알려져 있다. 그런데 개구리는 무조건 겨울 내에만 잠을 ( ㄱ ). 날씨가 더운 지역에 사는 개구리는 기온이 매우 높은 기간에 긴 잠을 자기도 한다. 왜냐하면 개구리는 사람과 달리 체내 몸이 체온 조절을 ( ㄴ ). 개구리처럼 체온 조절을 못하는 동물들에게 추위뿐만 아니라 더위도 생존에 위협이 되는 것이다.",
+                answers: {
+                    a: "자는 것은 아니다. / 자지 않는다. / 자는 것이 아니다.",
+                    b: "할 수 없기 때문이다. / 하지 못하기 때문이다. / 조절하지 못하기 때문이다."
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 95th
+            {
+                id: 29,
+                number: "95th",
+                type: "51번",
+                question: "안녕하십니까? 저는 일본으로 물건을 보냈습니다. 우체국 직원이 10일 내에 물건이 ( ㄱ ). 그런데 물건이 아직 도착하지 않았습니다. 저의 물건이 어디에 있는지 확인하려면 ( ㄴ )? 확인 방법을 알려 주시면 감사하겠습니다.",
+                answers: {
+                    a: "도착할 것이라고 했습니다 / 도착할 거라고 했습니다 / 도착할 예정이라고 했습니다 / 도착한다고 말했습니다.",
+                    b: "어떻게 해야 합니까? / 무엇을 해야 합니까? / 어떤 절차를 밟아야 합니까?"
+                },
+                difficulty: "medium"
+            },
+            {
+                id: 30,
+                number: "95th",
+                type: "52번",
+                question: "차를 오래 타면 왜 잠이 올까요? 차가 일정한 속도로 가면 작고 규칙적인 진동이 생기는 데 이 진동이 잠이 ( ㄱ ). 우리 뇌는 새로운 정보가 생길 때 이를 처리하려고 노력한다. 그런데 작고 규칙적인 진동을 새로운 정보로 생각하지 않아 더 이상 정보를 ( ㄴ ) 된다고 느낀다. 그래서 잠이 오는 것이다.",
+                answers: {
+                    a: "오게 만든다 / 오게 한다 / 들게 한다 / 올 수 있게 한다",
+                    b: "처리하지 않아도 / 분석할 필요가 없어 / 받아들이지 않아도"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 94th
+            {
+                id: 31,
+                number: "94th",
+                type: "51번",
+                question: "교수님, 안녕하세요. 한국어학과 4학년 미나입니다. 제가 다음주 '한국문화' 수업에서 첫 번째 발표를 하기로 했습니다. 그런데 그날 병원에 갔다 와야 해서 30분쯤 ( ㄱ ). 괜찮다고 하시면 좀 늦게 발표하고 싶습니다. 또한, 제가 다른 친구와 발표 순서를 ( ㄴ )? 정말 죄송합니다.",
+                answers: {
+                    a: "늦을 것 같습니다 / 지각할 것 같습니다",
+                    b: "바꿔도 되겠습니까? / 바꿔도 괜찮을까요? / 변경해도 괜찮을까요?"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 32,
+                number: "94th",
+                type: "52번",
+                question: "화분에 식물을 기를 때 물을 너무 많이 주면 식물은 잘 자라지 못하다. 왜냐하면 흙에 물이 너무 많으면 식물의 뿌리가 ( ㄱ ). 뿌리가 썩지않게 하려면 물을 주기 전에 흙의 상태가 어떤지를 살펴봐야 한다. 흙이 젖어 있는 경우에는 물을 더 이상 ( ㄴ ) 흙이 마를 때까지 기다렸다가 줘야 한다.",
+                answers: {
+                    a: "썩기 때문이다 / 썩기 쉽기 때문이다 / 썩을 수 있기 때문이다 / 쉽게 썩을 수 있기 때문이다",
+                    b: "주면 안 되고 / 주지 말고 / 주지 않고"
+                },
+                difficulty: "easy"
+            },
+            // TOPIK 93rd
+            {
+                id: 33,
+                number: "93rd",
+                type: "51번",
+                question: "안녕하세요? 저는 도서 예약 서비스를 ( ㄱ ) 비밀 번호를 잃어버렸습니다. 그래서 제 이메일로 임시 비밀 번호를 신청하였습니다. 그런데 비밀번호가 아직 저한테 ( ㄴ ). 확인해 주시기 바랍니다.",
+                answers: {
+                    a: "신청했는데 / 사용하고 싶은데 / 쓰고 싶은데 / 이용 중에",
+                    b: "오지 않았습니다 / 안 왔습니다 / 도착하지 않았습니다"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 34,
+                number: "93rd",
+                type: "52번",
+                question: "온도 차이가 심한 계절에서는 문을 열어 놓으면 바깥 공기가 안으로 들어와 에너지가 방비될 수 있다. 이런 에너지의 낭비를 ( ㄱ ) 회전문을 설치하는 경우가 많다. 회전문을 설치하면 바깥 공기가 안으로 ( ㄴ ) 빠르게 막아주고 들어온 공기를 밖으로 내보낸다.",
+                answers: {
+                    a: "줄이기 위해서 / 막기 위해서 / 방지하기 위해서",
+                    b: "들어오는 것을 / 들어오지 않도록"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 64th
+            {
+                id: 35,
+                number: "64th",
+                type: "51번",
+                question: "수미 씨, 그동안 고마웠습니다. 저는 다음 달이면 홍콩으로 일을 ( ㄱ ). 제가 원하는 회사에 취직을 해서 기쁘지만 수미 씨를 자주 못 볼 것 같아 아쉽습니다. 선물을 준비했는데 선물이 수미 씨 마음에 ( ㄴ ).",
+                answers: {
+                    a: "하러 갑니다",
+                    b: "들면/들었으면 좋겠습니다."
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 36,
+                number: "64th",
+                type: "52번",
+                question: "별은 지구에서 멀리 떨어져 있다. 그래서 별빛이 지구까지 오는 데 많은 시간이 걸린다. 지구와 가장 가까운 별의 빛도 지구까지 오는 데 4억 년이 걸린다. 만약 우리가 이 별을 본다면 우리는 이 별의 현재 모습이 아니라 4억 년 전의( ㄱ ). 이처럼 별빛은 오랜 시간이 지나야 지구에 도달한다. 그래서 어떤 별이 사라져도 우리는 그 사실을 바로 알지 못하고 아주 오랜 시간이 ( ㄴ ).",
+                answers: {
+                    a: "모습을 보는 것이다",
+                    b: "지나야 알 수 있다/ 지난 후에야 알 수 있다"
+                },
+                difficulty: "hard"
+            },
+            // TOPIK 70th
+            {
+                id: 37,
+                number: "70th",
+                type: "51번",
+                question: "이용 후기 저는 인주 호텔이 아주 만족스러웠습니다. 수영장이 있지만 공사 중이라서 수영을 ( ㄱ ). 그 호텔 근처의 경관도 매우 좋았습니다. 호텔 주변의 경치를 중요하게 생각하시는 분이라면 분명 이 호텔을 ( ㄴ ).",
+                answers: {
+                    a: "할 수 없었습니다. / 못했습니다.",
+                    b: "좋아할 것입니다./ 좋아하게 될 것입니다./ 선택하시리라 생각합니다."
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 38,
+                number: "70th",
+                type: "52번",
+                question: "추운 겨울을 이겨 내기 위해 겨울 동안 잠을 자는 동물들이 있다. 한 연구팀이 이런 동물들이 겨울 내내 자는 것이 아니라 가끔씩 잠을 ( ㄱ ). 그러나 이 때 동물들이 깨어나서 음식을 구하는 것이 아니다. 겨울잠을 자고 있는 곳에 저장해 둔 음식이 ( ㄴ )",
+                answers: {
+                    a: "깨는 것을 알게 되었다. / 깨는 것을 알아냈다. / 깨는 것을 밝혀냈다. / 일어나는 것을 알게 되었다.",
+                    b: "있기 때문이다. / 있어서 음식을 구하지 않아도 되다. / 있어서 음식을 구할 필요가 없다."
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 72nd
+            {
+                id: 39,
+                number: "72nd",
+                type: "51번",
+                question: "Email: 선생님 안녕하십니까? 저는 경영학과에 다니고 있는 외국인 유학생 마이클입니다. 제가 요즘 전공 때문에 고민이 많습니다. 지난 학기에 전공 수업을 들었는데 저에게 잘 ( ㄱ ) 제에게 맞는 전공을 찾고 싶습니다. 다음주 수요일에 선생님께 상담을 ( ㄴ )? 부탁드립니다.",
+                answers: {
+                    a: "맞지 않습니다. / 안 맞습니다. / 어울리지 않습니다.",
+                    b: "받을 수 있습니까? / 할 수 있습니까?"
+                },
+                difficulty: "medium"
+            },
+            {
+                id: 40,
+                number: "72nd",
+                type: "52번",
+                question: "사막에는 늘 먹는 물이 부족하다. 사막에 사는 동물들은 다른 곳에 사는 동물에 비해 먹을 물을 ( ㄱ ). 그런데 물을 목구하는 동물들도 살아남는 방법이 있다. 그것은 먹는 물 대신 식물의 줄기를 ( ㄴ ). 식물은 줄기에 물을 저장하기 때문이다.",
+                answers: {
+                    a: "구하기 어렵다 / 구하기 쉽지 않다 / 구하기 힘들다 / 구할 수 없다.",
+                    b: "먹는 것이다 / 먹는 방법이다 / 먹고 살아남는 것이다."
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 73rd
+            {
+                id: 41,
+                number: "73rd",
+                type: "51번",
+                question: "안녕하십니까? 저는 유학생 마이클이라고 합니다. 저는 인주대학교에서 6개월 전부터 한국어를 ( ㄱ ). 한국어 능력을 높이기 위해 한국인과 연습하고 싶습니다. 저는 전에 한번 한국인에게 영어를 ( ㄴ ). 그래서 영어를 잘 가르쳐 드릴 수 있습니다. 서로 가르치고 배우면서 능력을 키울 수 있을 것 같습니다. 관심이 있으신 분은 연락 주시기 바랍니다.",
+                answers: {
+                    a: "공부했습니다 / 배웠습니다 / 공부하고 있습니다 / 공부해 왔습니다 / 배워 왔습니다",
+                    b: "가르쳐 봤습니다 / 가르쳐 줘 봤습니다 / 가르친 적이 있습니다 / 가르쳐 준 적이 있습니다"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 42,
+                number: "73rd",
+                type: "52번",
+                question: "식당을 예약하고 나타나지 않는 사람들이 많다. 이런 경우 식당은 큰 피해를 본다. 이러한 손해를 막기 위해 예약 보증금 제도가 만들어졌다. 식당을 예약할 때 손님은 반드시 일정한 금액의 돈을 ( ㄱ ). 예약 시간에 오면 손님은 낸 돈을 돌려받지만 예약 시간에 나타나지 않으면 그 돈을 ( ㄴ ).",
+                answers: {
+                    a: "내야 한다 / 맡겨야 한다 / 결제해야 한다",
+                    b: "돌려받을 수 없다 / 돌려받지 못한다"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 79th
+            {
+                id: 43,
+                number: "79th",
+                type: "51번",
+                question: "제목: 추천합니다. 작성자: 김수미 지금까지 사용한 앱 중에 이 앱이 사용하기에 ( ㄱ ). 이전에 사용한 앱은 속도가 갑자기 느려지고 문제가 많아 불편했습니다. 이 앱은 속도가 빠르니까 한국어를 공부하는 사람들은 이 앱을 한번 ( ㄴ ).",
+                answers: {
+                    a: "가장 편했습니다 / 제일 좋았습니다 / 최고로 편리했습니다.",
+                    b: "사용해 보세요. / 이용해 보십시오. / 써 보시면 좋을 것 같습니다. / 사용해 보는 것이 좋습니다."
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 44,
+                number: "79th",
+                type: "52번",
+                question: "크고 화려한 나비의 날개를 보면 자연스럽고 아름답다는 ( ㄱ ). 이러한 나비의 아름다움은 나비가 날아다니는 모양에서도 느껴진다. 나비가 위에서 아래로, 오른쪽에서 왼쪽 방향으로 날아다녀서 음악에 맞춰 춤을 ( ㄴ ) 보인다.",
+                answers: {
+                    a: "느낌이 든다. / 생각이 든다. / 느낌을 받는다. / 느낌을 받는 사람들이 많다.",
+                    b: "추는 것처럼 / 추는 것같이 / 추는 듯이 / 추는 양 / 추게"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 87th
+            {
+                id: 45,
+                number: "87th",
+                type: "51번",
+                question: "과장님, 마이클입니다. 회의 자료를 집에 놓고 와서 다시 돌아가는 중입니다. 도착하려면 아마 30분쯤 더 ( ㄱ ). 먼저 회의를 하고 계시면 제가 빨리 가겠습니다. 늦어도 회의가 ( ㄴ ) 도착할 수 있습니다. 시간을 못 지켜서 정말 죄송합니다.",
+                answers: {
+                    a: "걸릴 것 같습니다. / 늦을 것 같습니다.",
+                    b: "끝나기 전에"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 46,
+                number: "87th",
+                type: "52번",
+                question: "뜨거운 음식을 먹은 후에 바로 차가운 음식을 먹는 경우가 많다. 이러한 습관은 치아를 ( ㄱ ). 급격한 온도 변화로 치아 표면의 부피가 늘었다가 줄어들면서 치아가 상하는 것이다. 따라서 뜨거운 것을 먹고 차가운 것을 먹을 때, 바로 먹는 것보다 시간이 조금 지난 후에 ( ㄴ ).",
+                answers: {
+                    a: "상하게 할 수 있다 / 상하게 한다 / 상하게 만든다.",
+                    b: "먹는 것이 (더) 좋다 / 먹는 것이 낫다."
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 91st
+            {
+                id: 47,
+                number: "91st",
+                type: "51번",
+                question: "제목: 진료 예약 변경 문의 안녕하세요. 저는 11월 12일에 진료 예약을 했습니다. 죄송합니다만 11월 12일에 다른 약속이 생겨서 진료 예약을 11월 13일로 ( ㄱ ). 만약 이 날 예약이 ( ㄴ ) 11월 15일도 괜찮습니다. 변경 가능한지 확인해 주시기 바랍니다.",
+                answers: {
+                    a: "변경하고 싶습니다 / 변경하려고 합니다 / 바꾸고 싶습니다 / 바꾸려고 합니다 / 변경해주시기 바랍니다 / 바뀌주시면 좋겠습니다",
+                    b: "불가능하면 / 안 되면 / 불가능하다면 / 안 된다면 / 안 되시면 / 불가능하시면"
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 48,
+                number: "91st",
+                type: "52번",
+                question: "단맛은 사람에게 행복함을 주는 맛으로 단 음식을 많이 먹으면 일시적으로 흥분감을 줄 수 있다. 그래서 단 음식을 먹으면 뇌의 스트레스를 해소하는 데 도움을 줄 수 있다. 그런데 전문가들은 사람들이 술이나 담배에 중독되는 것처럼 단맛에도 ( ㄱ ). 따라서 평소에 단 음식을 지나치게 많이 ( ㄴ ) 주의할 필요가 있다.",
+                answers: {
+                    a: "중독될 수 있다고 한다 / 중독될 수 있다고 말한다 / 중독된다고 한다",
+                    b: "먹지 않도록 / 먹지 않게 / 섭취하지 않도록"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 90th
+            {
+                id: 49,
+                number: "90th",
+                type: "51번",
+                question: "제목: 중간고사 간식 행사 안내. 안녕하세요? 유학생회 회장 마이클입니다. 곧 중간고사가 시작됩니다. 시험 기간 동안 유학생회에서 여러분을 위해 맛있는 간식을 준비했습니다. 아침 7시부터 1교시가 ( ㄱ ) 도서관 앞에서 간식을 나눠 드릴 예정입니다. 1교시가 시작된 후에는 간식을 받을 수 없으니 그전에 간식을 ( ㄴ ).",
+                answers: {
+                    a: "시작되기 전까지 / 시작될 때까지",
+                    b: "받으러 오시기 바랍니다. / 받아 가시기 바랍니다. / 받으시기 바랍니다. / 수령해 주시기 바랍니다."
+                },
+                difficulty: "easy"
+            },
+            {
+                id: 50,
+                number: "90th",
+                type: "52번",
+                question: "칫솔을 화장실에 보관하는 사람이 많다. 그런데 화장실은 칫솔을 보관하기에 ( ㄱ ). 습도가 높아서 세균이 많기 때문이다. 따라서 집안에 칫솔을 ( ㄴ ) 화장실처럼 습도가 높은 곳보다 건조하고 바람이 잘 통하는 곳에 보관하는 것이 좋다.",
+                answers: {
+                    a: "좋지 않다 / 적합하지 않다 / 좋은 곳이 아니다 / 적합한 곳이 아니다",
+                    b: "깨끗하게 보관하려면 / 깨끗하게 보관할 때는 / 깨끗하게 보관하기 위해서는 / 청결하게 보관하기 위해서는"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 63rd
+            {
+                id: 51,
+                number: "63rd",
+                type: "51번",
+                question: "'주말의 인기가요' 초대권을 받고 싶습니다. 주말마다 이 방송을 빼놓지 않고 보는 유학생입니다. 한국 음악을 좋아해서 여러 번 신청했지만 한 번도 초대권을 ( ㄱ ). 이제 곧 저는 유학 생활을 마치고 고향에 돌아갑니다. 그래서 이번 신청이 아마 저에게 마지막 ( ㄴ ). 멋진 추억을 만들 기회를 주시면 정말 고맙겠습니다.",
+                answers: {
+                    a: "받은 적이 없습니다/받지 못했습니다",
+                    b: "기회가 될 것 같습니다/기회일 것 같습니다/기회가 될지도 모릅니다"
+                },
+                difficulty: "medium"
+            },
+            {
+                id: 52,
+                number: "63rd",
+                type: "52번",
+                question: "음식의 맛은 온도에 따라 느껴지는 정도가 다르다. 짠맛과 신맛은 낮은 온도에서 강하게 느껴지는 반면 단맛은 조금 높은 온도에서 더 강하게 느껴진다. 따라서 과일을 달게 먹고 싶다면 냉장고 밖에 꺼내 두었다가 ( ㄱ ). 그 이유는 과일에서 차가운 기운이 사라질수록 단맛이 더 ( ㄴ ).",
+                answers: {
+                    a: "먹는 것이 좋다",
+                    b: "강해지기 때문이다/세지기 때문이다"
+                },
+                difficulty: "medium"
+            },
+            // TOPIK 76th
+            {
+                id: 53,
+                number: "76th",
+                type: "51번",
+                question: "제목: 도서관에 부탁드립니다.안녕하세요?한국에 온지 1년이 된 유학생입니다.작년에 제가 처음 한국에 ( ㄱ ) 도서관 이용 방법을 잘 몰랐습니다. 그래서 첫 학기에는 도서관을 이용하기 어려웠습니다. 다른 학교에는 유학생을 위한 도서관 이용 설명회가 있다고 합니다. 우리 학에도 설명회가 ( ㄴ ).",
+                answers: {
+                    a: "왔을 때/ 왔기 때문에",
+                    b: "있으면 좋겠습니다 / 있었으면 좋겠습니다."
+                },
+                difficulty: "medium"
+            },
+            {
+                id: 54,
+                number: "76th",
+                type: "52번",
+                question: "무인가를 집중해서 오래보다 보면 점점 눈이 불편함을 ( ㄱ ). 불편함이 느껴지는 것은 평서보다 눈을 감는 횟수가 줄어 눈이 건조해 주기 때문이다. 눈이 건조함을 해소하기 위해서 눈 운동을 하는 것이 좋다. 먼저 눈을 감고 셋을 센 후 눈을 크게 뜬다. 이를 반복하면 눈물이 나와서 눈이 건조함을 ( ㄴ ) 도움이 된다.",
+                answers: {
+                    a: "느끼게 된다",
+                    b: "해소하는 데에/해소하는데"
+                },
+                difficulty: "medium"
+            }
+        ];
+
+        // App state
+        let currentQuestionIndex = 0;
+        let userAnswers = Array(topikExams.length).fill().map(() => ({ a: "", b: "", checked: false, correct: false }));
+        let filteredQuestions = [...topikExams];
+        let currentFilter = "all";
+
+        // DOM elements
+        const questionText = document.getElementById('question-text');
+        const answerAInput = document.getElementById('answer-a');
+        const answerBInput = document.getElementById('answer-b');
+        const currentQuestionSpan = document.getElementById('current-question');
+        const questionCountSpan = document.getElementById('question-count');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const correctCountSpan = document.getElementById('correct-count');
+        const scorePercentageSpan = document.getElementById('score-percentage');
+        const topikNumberSpan = document.getElementById('topik-number');
+        const questionTypeSpan = document.getElementById('question-type');
+        const difficultySpan = document.getElementById('difficulty');
+        const progressFill = document.getElementById('progress-fill');
+        const sampleAnswersDiv = document.getElementById('sample-answers');
+        const sampleA = document.getElementById('sample-a');
+        const sampleB = document.getElementById('sample-b');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const checkBtn = document.getElementById('check-btn');
+        const skipBtn = document.getElementById('skip-btn');
+        const topikList = document.getElementById('topik-list');
+        const searchInput = document.getElementById('search-input');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const questionInfoSpan = document.getElementById('question-info');
+        const correctCountDisplay = document.getElementById('correct-count-display');
+        const incorrectCountDisplay = document.getElementById('incorrect-count-display');
+        const unansweredCountDisplay = document.getElementById('unanswered-count-display');
+        const completedCountSpan = document.getElementById('completed-count');
+        const currentScoreSpan = document.getElementById('current-score');
+
+        // Initialize the app
+        function init() {
+            totalQuestionsSpan.textContent = topikExams.length;
+            updateQuestionCount();
+            loadQuestion(currentQuestionIndex);
+            populateTopikList();
+            updateProgress();
+            updateStats();
+
+            // Event listeners
+            prevBtn.addEventListener('click', goToPreviousQuestion);
+            nextBtn.addEventListener('click', goToNextQuestion);
+            checkBtn.addEventListener('click', checkAnswers);
+            skipBtn.addEventListener('click', skipQuestion);
+
+            answerAInput.addEventListener('input', () => {
+                userAnswers[currentQuestionIndex].a = answerAInput.value;
+                updateStats();
+            });
+
+            answerBInput.addEventListener('input', () => {
+                userAnswers[currentQuestionIndex].b = answerBInput.value;
+                updateStats();
+            });
+
+            searchInput.addEventListener('input', filterQuestions);
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const filter = button.getAttribute('data-filter');
+                    setFilter(filter);
+                });
+            });
+        }
+
+        // Load a question by index
+        function loadQuestion(index) {
+            if (index < 0 || index >= filteredQuestions.length) return;
+
+            const question = filteredQuestions[index];
+            const originalIndex = topikExams.findIndex(q => q.id === question.id);
+
+            // Update question text and metadata
+            questionText.textContent = question.question;
+            currentQuestionSpan.textContent = index + 1;
+            topikNumberSpan.textContent = `TOPIK ${question.number}`;
+            questionTypeSpan.textContent = question.type;
+            questionInfoSpan.textContent = `TOPIK ${question.number} - ${question.type}`;
+
+            // Update difficulty
+            difficultySpan.textContent = question.difficulty.charAt(0).toUpperCase() + question.difficulty.slice(1);
+            difficultySpan.className = `difficulty ${question.difficulty}`;
+
+            // Update answer inputs
+            answerAInput.value = userAnswers[originalIndex].a;
+            answerBInput.value = userAnswers[originalIndex].b;
+
+            // Update sample answers
+            sampleA.textContent = question.answers.a;
+            sampleB.textContent = question.answers.b;
+
+            // Hide/show sample answers based on whether they've been checked
+            if (userAnswers[originalIndex].checked) {
+                sampleAnswersDiv.classList.add('active');
+                checkBtn.disabled = true;
+                checkBtn.innerHTML = '<i class="fas fa-check-circle"></i> Already Checked';
+                checkBtn.classList.remove('btn-primary');
+                checkBtn.classList.add('btn-success');
+            } else {
+                sampleAnswersDiv.classList.remove('active');
+                checkBtn.disabled = false;
+                checkBtn.innerHTML = '<i class="fas fa-check-circle"></i> Check Answers';
+                checkBtn.classList.remove('btn-success');
+                checkBtn.classList.add('btn-primary');
+            }
+
+            // Update button states
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === filteredQuestions.length - 1;
+
+            // Update active item in sidebar
+            updateActiveTopikItem();
+
+            // Update progress
+            updateProgress();
+        }
+
+        // Go to the next question
+        function goToNextQuestion() {
+            if (currentQuestionIndex < filteredQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+                updateQuestionCount();
+            }
+        }
+
+        // Go to the previous question
+        function goToPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+                updateQuestionCount();
+            }
+        }
+
+        // Skip the current question - FIXED
+        function skipQuestion() {
+            const originalIndex = topikExams.findIndex(q => q.id === filteredQuestions[currentQuestionIndex].id);
+            userAnswers[originalIndex].checked = true;
+            userAnswers[originalIndex].correct = false;
+            updateStats();
+
+            if (currentQuestionIndex < filteredQuestions.length - 1) {
+                goToNextQuestion();
+            }
+        }
+
+        // Check the answers - IMPROVED
+        function checkAnswers() {
+            const originalIndex = topikExams.findIndex(q => q.id === filteredQuestions[currentQuestionIndex].id);
+            userAnswers[originalIndex].checked = true;
+
+            // Get user answers and sample answers
+            const userA = userAnswers[originalIndex].a.trim();
+            const userB = userAnswers[originalIndex].b.trim();
+            const sampleA = filteredQuestions[currentQuestionIndex].answers.a;
+            const sampleB = filteredQuestions[currentQuestionIndex].answers.b;
+
+            // Check if answers are similar enough
+            let isCorrectA = false;
+            let isCorrectB = false;
+
+            // Helper function to normalize Korean text for comparison
+            function normalizeKoreanText(text) {
+                return text
+                    .toLowerCase()
+                    .replace(/\s+/g, ' ')  // Normalize multiple spaces to single space
+                    .replace(/[.,?!/]/g, '') // Remove common punctuation
+                    .trim();
+            }
+
+            // Normalize user answers
+            const normalizedUserA = normalizeKoreanText(userA);
+            const normalizedUserB = normalizeKoreanText(userB);
+
+            // Check if user answer contains any of the sample answer options
+            const sampleAOptions = sampleA.split('/').map(opt => normalizeKoreanText(opt.trim()));
+            const sampleBOptions = sampleB.split('/').map(opt => normalizeKoreanText(opt.trim()));
+
+            // For each sample option, check if it's in the user's answer OR if user's answer is in the option
+            for (const option of sampleAOptions) {
+                if (normalizedUserA.includes(option) || option.includes(normalizedUserA)) {
+                    isCorrectA = true;
+                    break;
+                }
+            }
+
+            for (const option of sampleBOptions) {
+                if (normalizedUserB.includes(option) || option.includes(normalizedUserB)) {
+                    isCorrectB = true;
+                    break;
+                }
+            }
+
+            // Mark as correct if both answers are correct
+            userAnswers[originalIndex].correct = isCorrectA && isCorrectB;
+
+            // Update stats
+            updateStats();
+
+            // Show sample answers
+            sampleAnswersDiv.classList.add('active');
+
+            // Disable check button
+            checkBtn.disabled = true;
+            checkBtn.innerHTML = '<i class="fas fa-check-circle"></i> Already Checked';
+            checkBtn.classList.remove('btn-primary');
+            checkBtn.classList.add('btn-success');
+
+            // Provide feedback
+            let feedback = '';
+            if (isCorrectA && isCorrectB) {
+                feedback = 'Excellent! Both answers are correct.';
+            } else if (isCorrectA || isCorrectB) {
+                feedback = 'Good try! One answer is correct. Check the sample answers for comparison.';
+            } else {
+                feedback = 'Not quite right. Compare your answers with the sample answers below.';
+            }
+
+            // Show feedback as a hint
+            const existingHint = document.querySelector('.feedback-hint');
+            if (existingHint) existingHint.remove();
+
+            const feedbackHint = document.createElement('div');
+            feedbackHint.className = 'hint feedback-hint';
+            feedbackHint.innerHTML = `<i class="fas fa-comment"></i> <strong>Feedback:</strong> ${feedback}`;
+            
+            // Add which part was correct/wrong
+            if (isCorrectA !== isCorrectB) {
+                const partCorrect = isCorrectA ? "(ㄱ)" : "(ㄴ)";
+                feedbackHint.innerHTML += `<br><small>${partCorrect} was correct. Try again on the other part!</small>`;
+            }
+            
+            sampleAnswersDiv.prepend(feedbackHint);
+        }
+
+        // Update the question count display
+        function updateQuestionCount() {
+            questionCountSpan.textContent = currentQuestionIndex + 1;
+        }
+
+        // Update stats
+        function updateStats() {
+            const checkedCount = userAnswers.filter(answer => answer.checked).length;
+            const correctCount = userAnswers.filter(answer => answer.correct).length;
+            const incorrectCount = userAnswers.filter(answer => answer.checked && !answer.correct).length;
+            const unansweredCount = topikExams.length - checkedCount;
+
+            const scorePercentage = checkedCount > 0 ? Math.round((correctCount / checkedCount) * 100) : 0;
+
+            correctCountSpan.textContent = correctCount;
+            scorePercentageSpan.textContent = `${scorePercentage}%`;
+            correctCountDisplay.textContent = correctCount;
+            incorrectCountDisplay.textContent = incorrectCount;
+            unansweredCountDisplay.textContent = unansweredCount;
+            completedCountSpan.textContent = checkedCount;
+            currentScoreSpan.textContent = `${scorePercentage}%`;
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / filteredQuestions.length) * 100;
+            progressFill.style.width = `${progress}%`;
+        }
+
+        // Populate the TOPIK list in the sidebar
+        function populateTopikList() {
+            topikList.innerHTML = '';
+
+            filteredQuestions.forEach((exam, index) => {
+                const originalIndex = topikExams.findIndex(q => q.id === exam.id);
+                const listItem = document.createElement('li');
+                listItem.className = `topik-item ${index === currentQuestionIndex ? 'active' : ''}`;
+
+                let statusIcon = 'fa-circle';
+                let statusColor = '';
+
+                if (userAnswers[originalIndex].checked) {
+                    statusIcon = userAnswers[originalIndex].correct ? 'fa-check-circle' : 'fa-times-circle';
+                    statusColor = userAnswers[originalIndex].correct ? 'color: var(--success-color);' : 'color: var(--secondary-color);';
+                }
+
+                listItem.innerHTML = `
+                    <div>
+                        <div><strong>TOPIK ${exam.number}</strong> - ${exam.type}</div>
+                        <div style="font-size: 0.9rem; color: #666;">Question ${originalIndex + 1}</div>
+                    </div>
+                    <div>
+                        <span class="question-type">${exam.type}</span>
+                        <i class="fas ${statusIcon}" style="${statusColor} margin-left: 8px;"></i>
+                    </div>
+                `;
+
+                listItem.addEventListener('click', () => {
+                    currentQuestionIndex = index;
+                    loadQuestion(currentQuestionIndex);
+                    updateQuestionCount();
+                });
+
+                topikList.appendChild(listItem);
+            });
+        }
+
+        // Update active item in TOPIK list
+        function updateActiveTopikItem() {
+            const items = document.querySelectorAll('.topik-item');
+            items.forEach((item, index) => {
+                if (index === currentQuestionIndex) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // Filter questions based on search input
+        function filterQuestions() {
+            const searchTerm = searchInput.value.toLowerCase();
+
+            if (searchTerm === '') {
+                filteredQuestions = [...topikExams];
+            } else {
+                filteredQuestions = topikExams.filter(question => {
+                    return question.question.toLowerCase().includes(searchTerm) ||
+                        question.number.toLowerCase().includes(searchTerm) ||
+                        question.type.toLowerCase().includes(searchTerm);
+                });
+            }
+
+            // Apply current filter
+            applyFilter(currentFilter);
+
+            // Reset to first question
+            currentQuestionIndex = 0;
+            loadQuestion(currentQuestionIndex);
+            populateTopikList();
+        }
+
+        // Set filter
+        function setFilter(filter) {
+            currentFilter = filter;
+
+            // Update filter buttons
+            filterButtons.forEach(button => {
+                if (button.getAttribute('data-filter') === filter) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+
+            // Apply filter
+            applyFilter(filter);
+
+            // Reset to first question
+            currentQuestionIndex = 0;
+            loadQuestion(currentQuestionIndex);
+            populateTopikList();
+        }
+
+        // Apply filter to filteredQuestions
+        function applyFilter(filter) {
+            let tempQuestions = [...topikExams];
+
+            // First apply search filter if any
+            const searchTerm = searchInput.value.toLowerCase();
+            if (searchTerm !== '') {
+                tempQuestions = tempQuestions.filter(question => {
+                    return question.question.toLowerCase().includes(searchTerm) ||
+                        question.number.toLowerCase().includes(searchTerm) ||
+                        question.type.toLowerCase().includes(searchTerm);
+                });
+            }
+
+            // Then apply the selected filter
+            switch (filter) {
+                case '51':
+                    filteredQuestions = tempQuestions.filter(q => q.type === '51번');
+                    break;
+                case '52':
+                    filteredQuestions = tempQuestions.filter(q => q.type === '52번');
+                    break;
+                case 'unanswered':
+                    filteredQuestions = tempQuestions.filter((q, index) => !userAnswers[index].checked);
+                    break;
+                case 'answered':
+                    filteredQuestions = tempQuestions.filter((q, index) => userAnswers[index].checked);
+                    break;
+                default: // 'all'
+                    filteredQuestions = [...tempQuestions];
+            }
+        }
+
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>
