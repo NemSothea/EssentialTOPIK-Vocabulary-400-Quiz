@@ -5,325 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TOPIK Quiz Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            width: 100%;
-        }
-
-        /* Header Styles */
-        header {
-            background: linear-gradient(135deg, #2c3e50, #4a6491);
-            color: white;
-            padding: 2rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
-            opacity: 0.2;
-            z-index: 0;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
-
-        .logo i {
-            font-size: 2.5rem;
-            margin-right: 10px;
-            color: #4CAF50;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 3rem 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 2.5rem;
-            color: #2c3e50;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, #4CAF50, #2196F3);
-            margin: 10px auto 0;
-            border-radius: 2px;
-        }
-
-        .quiz-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .quiz-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid #eaeaea;
-        }
-
-        .quiz-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.12);
-        }
-
-        .card-header {
-            padding: 1.5rem;
-            background: linear-gradient(135deg, #2196F3, #21CBF3);
-            color: white;
-        }
-
-        .card-header.topik-writing {
-            background: linear-gradient(135deg, #4CAF50, #8BC34A);
-        }
-
-        .card-header.day-01 {
-            background: linear-gradient(135deg, #FF9800, #FFC107);
-        }
-
-        .card-icon {
-            font-size: 2.2rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .card-title {
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .card-subtitle {
-            font-size: 0.95rem;
-            opacity: 0.9;
-        }
-
-        .card-content {
-            padding: 1.8rem;
-        }
-
-        .resource-list {
-            list-style-type: none;
-        }
-
-        .resource-item {
-            margin-bottom: 1.2rem;
-            padding: 1rem;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #2196F3;
-            transition: all 0.2s ease;
-        }
-
-        .resource-item:hover {
-            background-color: #e9f7fe;
-            transform: translateX(5px);
-        }
-
-        .resource-item.topik-writing-item {
-            border-left-color: #4CAF50;
-        }
-
-        .resource-item.day-01-item {
-            border-left-color: #FF9800;
-        }
-
-        .resource-link {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: #333;
-        }
-
-        .resource-link i {
-            margin-right: 12px;
-            font-size: 1.2rem;
-            color: #2196F3;
-            min-width: 24px;
-        }
-
-        .resource-link.topik-writing-link i {
-            color: #4CAF50;
-        }
-
-        .resource-link.day-01-link i {
-            color: #FF9800;
-        }
-
-        .resource-text {
-            font-weight: 500;
-        }
-
-        .url-preview {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 5px;
-            word-break: break-all;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .footer-logo {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #4CAF50;
-        }
-
-        .copyright {
-            opacity: 0.8;
-            font-size: 0.95rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .quiz-cards {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .card-header {
-                padding: 1.2rem;
-            }
-            
-            .card-content {
-                padding: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 15px;
-            }
-            
-            h1 {
-                font-size: 1.7rem;
-            }
-            
-            .subtitle {
-                font-size: 1rem;
-            }
-            
-            .main-content {
-                padding: 2rem 0;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-                margin-bottom: 1.8rem;
-            }
-        }
-
-        /* Animation for cards */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .quiz-card {
-            animation: fadeInUp 0.5s ease forwards;
-        }
-
-        .quiz-card:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-
-        .quiz-card:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-theme="light">
     <!-- Header Section -->
     <header>
         <div class="container">
-            <div class="header-content">
+            <div class="header-top">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <span class="theme-icon sun-icon"><i class="fas fa-sun"></i></span>
+                    <span class="theme-icon moon-icon"><i class="fas fa-moon"></i></span>
+                </button>
                 <div class="logo">
                     <i class="fas fa-language"></i>
                     <h1>TOPIK Quiz Portal</h1>
                 </div>
-                <p class="subtitle">Access curated resources for TOPIK (Test of Proficiency in Korean) preparation. Click on any resource card to explore interactive quizzes and learning materials.</p>
+                <div style="width: 60px;"></div> <!-- Spacer for alignment -->
+            </div>
+            <div class="header-content">
+                <p class="subtitle">Access curated resources for TOPIK (Test of Proficiency in Korean) preparation. All resources load in-page for seamless navigation.</p>
             </div>
         </div>
     </header>
@@ -331,62 +31,87 @@
     <!-- Main Content -->
     <section class="main-content">
         <div class="container">
-            <h2 class="section-title">Available Resources</h2>
+            <!-- Navigation Bar -->
+            <div class="nav-bar">
+                <button class="nav-btn home-btn active" onclick="showHome()" id="homeBtn">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <button class="nav-btn topik-writing-btn" onclick="showTopikWriting()" id="topikWritingBtn">
+                    <i class="fas fa-pen-fancy"></i> TOPIK Writing
+                </button>
+                <button class="nav-btn day-01-btn" onclick="showDay01()" id="day01Btn">
+                    <i class="fas fa-calendar-day"></i> Day 01
+                </button>
+                <button class="nav-btn day-02-btn" onclick="showDay02()" id="day02Btn">
+                    <i class="fas fa-calendar-day"></i> Day 02
+                </button>
+                <button class="nav-btn day-03-btn" onclick="showDay03()" id="day03Btn">
+                    <i class="fas fa-calendar-day"></i> Day 03
+                </button>
+            </div>
             
-            <div class="quiz-cards">
-                <!-- TOPIK Writing Card -->
-                <div class="quiz-card" onclick="window.open('https://nemsothea.github.io/topikquiz/writing.html', '_blank')">
-                    <div class="card-header topik-writing">
-                        <div class="card-icon">
-                            <i class="fas fa-pen-fancy"></i>
-                        </div>
-                        <div class="card-title">TOPIK Writing</div>
-                        <div class="card-subtitle">Practice your Korean writing skills with guided exercises</div>
-                    </div>
-                    <div class="card-content">
-                        <ul class="resource-list">
-                            <li class="resource-item topik-writing-item">
-                                <a href="https://nemsothea.github.io/topikquiz/topikwriting.html" target="_blank" class="resource-link topik-writing-link">
-                                    <i class="fas fa-external-link-alt"></i>
-                                    <div>
-                                        <div class="resource-text">TOPIK Writing Practice</div>
-                                        <div class="url-preview">nemsothea.github.io/topikquiz/topikwriting.html</div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                        <p style="margin-top: 1.5rem; color: #666; font-size: 0.95rem;">
-                            <i class="fas fa-lightbulb" style="color: #4CAF50; margin-right: 8px;"></i>
-                            This resource helps you practice Korean writing for the TOPIK exam with sample questions and format guidance.
-                        </p>
+            <!-- Content Area -->
+            <div class="content-area fade-in" id="contentArea">
+                <!-- Home content will be shown by default -->
+                <div class="content-header">
+                    <div class="content-title">
+                        <i class="fas fa-home"></i> Welcome to TOPIK Quiz Portal
                     </div>
                 </div>
-                
-                <!-- Day 01 Card -->
-                <div class="quiz-card" onclick="window.open('https://nemsothea.github.io/topikquiz/day01.html', '_blank')">
-                    <div class="card-header day-01">
-                        <div class="card-icon">
-                            <i class="fas fa-calendar-day"></i>
-                        </div>
-                        <div class="card-title">Day 01</div>
-                        <div class="card-subtitle">Start your TOPIK preparation with foundational exercises</div>
-                    </div>
-                    <div class="card-content">
-                        <ul class="resource-list">
-                            <li class="resource-item day-01-item">
-                                <a href="https://nemsothea.github.io/topikquiz/day01.html" target="_blank" class="resource-link day-01-link">
-                                    <i class="fas fa-external-link-alt"></i>
-                                    <div>
-                                        <div class="resource-text">Day 01 Practice Material</div>
-                                        <div class="url-preview">nemsothea.github.io/topikquiz/day01.html</div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                        <p style="margin-top: 1.5rem; color: #666; font-size: 0.95rem;">
-                            <i class="fas fa-lightbulb" style="color: #FF9800; margin-right: 8px;"></i>
-                            Begin your TOPIK journey with these foundational exercises designed for Day 1 of your study plan.
+                <div class="content-body">
+                    <div class="home-content">
+                        <h2 class="welcome-title">Start Your Korean Learning Journey</h2>
+                        <p class="welcome-text">
+                            This portal provides direct access to TOPIK (Test of Proficiency in Korean) preparation resources. 
+                            All content loads within this page, allowing you to use browser navigation (back/forward buttons) 
+                            for a seamless learning experience.
                         </p>
+                        
+                        <div class="feature-cards">
+                            <div class="feature-card" onclick="showTopikWriting(event)" id="topikWritingCard">
+                                <div class="feature-icon">
+                                    <i class="fas fa-pen-fancy"></i>
+                                </div>
+                                <h3 class="feature-title">TOPIK Writing</h3>
+                                <p class="feature-desc">
+                                    Practice your Korean writing skills with guided exercises and sample questions 
+                                    specifically designed for the TOPIK exam format.
+                                </p>
+                            </div>
+                            
+                            <div class="feature-card day-01-card" onclick="showDay01(event)" id="day01Card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-calendar-day"></i>
+                                </div>
+                                <h3 class="feature-title">Day 01 Exercises</h3>
+                                <p class="feature-desc">
+                                    Begin your TOPIK preparation with foundational exercises designed for 
+                                    Day 1 of your study plan. Perfect for beginners.
+                                </p>
+                            </div>
+                            
+                            <div class="feature-card day-02-card" onclick="showDay02(event)" id="day02Card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-calendar-day"></i>
+                                </div>
+                                <h3 class="feature-title">Day 02 Exercises</h3>
+                                <p class="feature-desc">
+                                    Continue your TOPIK journey with intermediate exercises designed for 
+                                    Day 2 of your study plan. Build upon your foundation.
+                                </p>
+                            </div>
+                            
+                            <div class="feature-card day-03-card" onclick="showDay03(event)" id="day03Card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-calendar-day"></i>
+                                </div>
+                                <h3 class="feature-title">Day 03 Exercises</h3>
+                                <p class="feature-desc">
+                                    Advance your TOPIK preparation with challenging exercises designed for 
+                                    Day 3 of your study plan. For intermediate learners.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -400,48 +125,12 @@
                 <div class="footer-logo">
                     <i class="fas fa-graduation-cap"></i>
                 </div>
-                <p class="copyright">&copy; 2023 TOPIK Quiz Portal. All resources curated for educational purposes.</p>
+                <p class="copyright">&copy; 2026 TOPIK Quiz Portal. All resources curated for educational purposes.</p>
                 <p style="margin-top: 10px; opacity: 0.7; font-size: 0.9rem;">Part of the TOPIK Quiz collection by nemsothea</p>
             </div>
         </div>
     </footer>
 
-    <script>
-        // Add click effect to cards
-        document.querySelectorAll('.quiz-card').forEach(card => {
-            card.addEventListener('mousedown', function() {
-                this.style.transform = 'scale(0.98)';
-            });
-            
-            card.addEventListener('mouseup', function() {
-                this.style.transform = '';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = '';
-            });
-        });
-        
-        // Add animation on scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.quiz-card');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            cards.forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                observer.observe(card);
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
