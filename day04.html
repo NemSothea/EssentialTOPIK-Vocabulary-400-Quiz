@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korean-English Vocabulary Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cbc;
+            --accent-color: #ff7e5f;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+            --warning-color: #f39c12;
+        }
+
+        .dark-mode {
+            --primary-color: #5a8fd8;
+            --secondary-color: #7aa6e3;
+            --accent-color: #ff9c84;
+            --bg-color: #1a1a2e;
+            --text-color: #e6e6e6;
+            --card-bg: #16213e;
+            --border-color: #2d3748;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--primary-color);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 5px;
+            background-color: var(--card-bg);
+            padding: 5px;
+            border-radius: 30px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .lang-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .theme-toggle {
+            background-color: var(--card-bg);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            font-size: 20px;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2 i {
+            color: var(--primary-color);
+        }
+
+        .word-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .word-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--bg-color);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .word-details {
+            flex: 1;
+        }
+
+        .korean-word {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .english-meaning {
+            font-size: 16px;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        .example {
+            font-size: 14px;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .example-translation {
+            font-size: 13px;
+            color: var(--text-color);
+            opacity: 0.6;
+            margin-top: 2px;
+        }
+
+        .quiz-section {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-section {
+                grid-column: span 1;
+            }
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .quiz-question {
+            font-size: 22px;
+            margin-bottom: 25px;
+            text-align: center;
+            padding: 20px;
+            background-color: var(--bg-color);
+            border-radius: 12px;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 576px) {
+            .quiz-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .quiz-option {
+            padding: 18px;
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .quiz-option.correct {
+            background-color: rgba(46, 204, 113, 0.2);
+            border-color: var(--success-color);
+            color: var(--success-color);
+        }
+
+        .quiz-option.incorrect {
+            background-color: rgba(231, 76, 60, 0.2);
+            border-color: var(--error-color);
+            color: var(--error-color);
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--bg-color);
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .result-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--border-color);
+            border-radius: 5px;
+            margin: 25px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-color);
+            opacity: 0.7;
+            font-size: 14px;
+        }
+
+        .word-count {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .highlight {
+            background-color: rgba(255, 126, 95, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-language"></i>
+                <h1 id="app-title">한국어-영어 단어 퀴즈</h1>
+            </div>
+            
+            <div class="controls">
+                <div class="lang-switch">
+                    <button class="lang-btn active" id="lang-ko">한국어</button>
+                    <button class="lang-btn" id="lang-en">English</button>
+                </div>
+                
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="card">
+                <h2><i class="fas fa-list-alt"></i> <span id="word-list-title">단어 목록</span> <span class="word-count">15</span></h2>
+                <div class="word-list" id="word-list">
+                    <!-- Word list will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-lightbulb"></i> <span id="instructions-title">퀴즈 방법</span></h2>
+                <div id="instructions">
+                    <p><strong><span id="instructions-step1">1. 퀴즈 시작하기:</span></strong> <span id="instructions-desc1">"퀴즈 시작" 버튼을 클릭하여 한국어 단어와 영어 뜻을 맞추는 퀴즈를 시작합니다.</span></p>
+                    <p><strong><span id="instructions-step2">2. 문제 풀기:</span></strong> <span id="instructions-desc2">주어진 한국어 단어에 맞는 영어 뜻을 4개의 선택지에서 고릅니다.</span></p>
+                    <p><strong><span id="instructions-step3">3. 결과 확인:</span></strong> <span id="instructions-desc3">각 문제를 풀면 정답 여부가 즉시 표시됩니다.</span></p>
+                    <p><strong><span id="instructions-step4">4. 진행 상황:</span></strong> <span id="instructions-desc4">상단의 진행 막대와 점수로 퀴즈 진행 상황을 확인할 수 있습니다.</span></p>
+                    <p><strong><span id="instructions-step5">5. 언어 전환:</span></strong> <span id="instructions-desc5">상단의 언어 버튼으로 한국어와 영어 인터페이스를 전환할 수 있습니다.</span></p>
+                </div>
+            </div>
+            
+            <div class="card quiz-section">
+                <div class="quiz-header">
+                    <h2><i class="fas fa-question-circle"></i> <span id="quiz-title">단어 퀴즈</span></h2>
+                    <div class="score"><span id="score-text">점수:</span> <span id="score-value">0</span>/15</div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="quiz-progress"></div>
+                </div>
+                
+                <div class="quiz-question" id="quiz-question">
+                    <span id="question-text">"퀴즈 시작" 버튼을 클릭하여 퀴즈를 시작하세요.</span>
+                </div>
+                
+                <div class="quiz-options" id="quiz-options">
+                    <!-- Quiz options will be populated by JavaScript -->
+                </div>
+                
+                <div class="quiz-controls">
+                    <button class="btn btn-secondary" id="hint-btn">
+                        <i class="fas fa-lightbulb"></i> <span id="hint-text">힌트 보기</span>
+                    </button>
+                    
+                    <button class="btn btn-primary" id="next-btn">
+                        <i class="fas fa-arrow-right"></i> <span id="next-text">다음 문제</span>
+                    </button>
+                </div>
+                
+                <div class="result" id="quiz-result">
+                    <h3 id="result-title">퀴즈 완료!</h3>
+                    <div class="result-score" id="result-score">0/15</div>
+                    <p id="result-message">모든 문제를 풀었습니다. 수고하셨습니다!</p>
+                    <button class="btn btn-primary" id="restart-btn">
+                        <i class="fas fa-redo"></i> <span id="restart-text">퀴즈 다시 시작</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p id="footer-text">한국어-영어 단어 학습 퀴즈 앱 © 2023 | 제공된 단어를 학습하고 퀴즈를 풀어보세요.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Vocabulary data
+        const vocabulary = [
+            {
+                korean: "모자라다",
+                english: "lack",
+                example: "졸업을 하기에 출석 일수가 모자라다.",
+                exampleTranslation: "There aren't enough attendance days to graduate."
+            },
+            {
+                korean: "성공하다",
+                english: "succeed",
+                example: "그 기업은 국내뿐만 아니라 해외 시장 공략에도 성공했다.",
+                exampleTranslation: "The company succeeded in targeting not only domestic but also overseas markets."
+            },
+            {
+                korean: "투자하다",
+                english: "invest",
+                example: "그는 주식에 투자하여 많은 돈을 벌었다.",
+                exampleTranslation: "He made a lot of money by investing in stocks."
+            },
+            {
+                korean: "마르다",
+                english: "dry",
+                example: "빨래가 뽀송뽀송 마르다.",
+                exampleTranslation: "The laundry dries fluffy."
+            },
+            {
+                korean: "선호하다",
+                english: "prefer",
+                example: "젊은 부부들은 생활이 편리한 아파트를 선호하는 경향이 있다.",
+                exampleTranslation: "Young couples tend to prefer apartments with convenient living conditions."
+            },
+            {
+                korean: "실패하다",
+                english: "fail",
+                example: "그는 체중 감량에 실패했다.",
+                exampleTranslation: "He failed to lose weight."
+            },
+            {
+                korean: "없애다",
+                english: "remove",
+                example: "남녀 차별을 없애다.",
+                exampleTranslation: "Remove gender discrimination."
+            },
+            {
+                korean: "전망",
+                english: "prospect",
+                example: "경기가 계속 좋으리라는 전망이 나왔다.",
+                exampleTranslation: "There is a prospect that the economy will continue to be good."
+            },
+            {
+                korean: "전략",
+                english: "strategy",
+                example: "제품의 판매량을 늘리기 위해서는 새로운 판매 전략이 필요합니다.",
+                exampleTranslation: "A new sales strategy is needed to increase product sales."
+            },
+            {
+                korean: "용납하다",
+                english: "tolerate",
+                example: "그런 변명은 선생님께 용납되지 않을 것이다.",
+                exampleTranslation: "Such an excuse will not be tolerated by the teacher."
+            },
+            {
+                korean: "대출하다",
+                english: "lend",
+                example: "은행에서 돈을 대출하다.",
+                exampleTranslation: "Borrow money from a bank."
+            },
+            {
+                korean: "교환하다",
+                english: "exchange",
+                example: "동료와 의견을 교환하다.",
+                exampleTranslation: "Exchange opinions with colleagues."
+            },
+            {
+                korean: "우려하다",
+                english: "worry",
+                example: "부모님께서는 항상 자식들의 건강을 우려하신다.",
+                exampleTranslation: "Parents always worry about their children's health."
+            },
+            {
+                korean: "강요하다",
+                english: "force",
+                example: "아이에게 선택을 강요하지 마세요.",
+                exampleTranslation: "Don't force a choice on the child."
+            },
+            {
+                korean: "이익",
+                english: "profit",
+                example: "언니는 옷가게를 하며 많은 이익을 보았다.",
+                exampleTranslation: "My sister made a lot of profit running a clothing store."
+            }
+        ];
+
+        // UI Text in both languages
+        const uiText = {
+            ko: {
+                appTitle: "한국어-영어 단어 퀴즈",
+                wordListTitle: "단어 목록",
+                instructionsTitle: "퀴즈 방법",
+                instructionsStep1: "1. 퀴즈 시작하기:",
+                instructionsDesc1: '"퀴즈 시작" 버튼을 클릭하여 한국어 단어와 영어 뜻을 맞추는 퀴즈를 시작합니다.',
+                instructionsStep2: "2. 문제 풀기:",
+                instructionsDesc2: "주어진 한국어 단어에 맞는 영어 뜻을 4개의 선택지에서 고릅니다.",
+                instructionsStep3: "3. 결과 확인:",
+                instructionsDesc3: "각 문제를 풀면 정답 여부가 즉시 표시됩니다.",
+                instructionsStep4: "4. 진행 상황:",
+                instructionsDesc4: "상단의 진행 막대와 점수로 퀴즈 진행 상황을 확인할 수 있습니다.",
+                instructionsStep5: "5. 언어 전환:",
+                instructionsDesc5: "상단의 언어 버튼으로 한국어와 영어 인터페이스를 전환할 수 있습니다.",
+                quizTitle: "단어 퀴즈",
+                scoreText: "점수:",
+                questionStart: '"퀴즈 시작" 버튼을 클릭하여 퀴즈를 시작하세요.',
+                hintText: "힌트 보기",
+                nextText: "다음 문제",
+                startText: "퀴즈 시작",
+                resultTitle: "퀴즈 완료!",
+                resultMessage: "모든 문제를 풀었습니다. 수고하셨습니다!",
+                restartText: "퀴즈 다시 시작",
+                footerText: "한국어-영어 단어 학습 퀴즈 앱 © 2023 | 제공된 단어를 학습하고 퀴즈를 풀어보세요.",
+                correctAnswer: "정답입니다!",
+                wrongAnswer: "틀렸습니다. 정답은: ",
+                questionFormat: "다음 한국어 단어의 영어 뜻은?"
+            },
+            en: {
+                appTitle: "Korean-English Vocabulary Quiz",
+                wordListTitle: "Word List",
+                instructionsTitle: "How to Play",
+                instructionsStep1: "1. Start the quiz:",
+                instructionsDesc1: 'Click the "Start Quiz" button to begin a quiz matching Korean words with their English meanings.',
+                instructionsStep2: "2. Answer questions:",
+                instructionsDesc2: "Choose the correct English meaning for the given Korean word from 4 options.",
+                instructionsStep3: "3. Check results:",
+                instructionsDesc3: "After each question, you'll see immediately if you answered correctly.",
+                instructionsStep4: "4. Track progress:",
+                instructionsDesc4: "Monitor your progress with the progress bar and score at the top.",
+                instructionsStep5: "5. Switch language:",
+                instructionsDesc5: "Use the language buttons at the top to switch between Korean and English interface.",
+                quizTitle: "Vocabulary Quiz",
+                scoreText: "Score:",
+                questionStart: 'Click the "Start Quiz" button to begin the quiz.',
+                hintText: "Show Hint",
+                nextText: "Next Question",
+                startText: "Start Quiz",
+                resultTitle: "Quiz Completed!",
+                resultMessage: "You've answered all questions. Well done!",
+                restartText: "Restart Quiz",
+                footerText: "Korean-English Vocabulary Quiz App © 2023 | Learn the provided words and test your knowledge.",
+                correctAnswer: "Correct!",
+                wrongAnswer: "Incorrect. The right answer is: ",
+                questionFormat: "What is the English meaning of this Korean word?"
+            }
+        };
+
+        // App state
+        let currentLang = 'ko';
+        let isDarkMode = false;
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let quizStarted = false;
+        let currentOptions = [];
+        let usedIndices = [];
+        
+        // DOM elements
+        const appTitle = document.getElementById('app-title');
+        const wordListTitle = document.getElementById('word-list-title');
+        const instructionsTitle = document.getElementById('instructions-title');
+        const instructionsStep1 = document.getElementById('instructions-step1');
+        const instructionsDesc1 = document.getElementById('instructions-desc1');
+        const instructionsStep2 = document.getElementById('instructions-step2');
+        const instructionsDesc2 = document.getElementById('instructions-desc2');
+        const instructionsStep3 = document.getElementById('instructions-step3');
+        const instructionsDesc3 = document.getElementById('instructions-desc3');
+        const instructionsStep4 = document.getElementById('instructions-step4');
+        const instructionsDesc4 = document.getElementById('instructions-desc4');
+        const instructionsStep5 = document.getElementById('instructions-step5');
+        const instructionsDesc5 = document.getElementById('instructions-desc5');
+        const quizTitle = document.getElementById('quiz-title');
+        const scoreText = document.getElementById('score-text');
+        const questionText = document.getElementById('question-text');
+        const hintText = document.getElementById('hint-text');
+        const nextText = document.getElementById('next-text');
+        const startText = document.getElementById('start-text');
+        const resultTitle = document.getElementById('result-title');
+        const resultMessage = document.getElementById('result-message');
+        const restartText = document.getElementById('restart-text');
+        const footerText = document.getElementById('footer-text');
+        
+        const wordList = document.getElementById('word-list');
+        const quizOptions = document.getElementById('quiz-options');
+        const scoreValue = document.getElementById('score-value');
+        const quizProgress = document.getElementById('quiz-progress');
+        const quizResult = document.getElementById('quiz-result');
+        const resultScore = document.getElementById('result-score');
+        
+        const langKoBtn = document.getElementById('lang-ko');
+        const langEnBtn = document.getElementById('lang-en');
+        const themeToggle = document.getElementById('theme-toggle');
+        const hintBtn = document.getElementById('hint-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        
+        // Initialize app
+        function initApp() {
+            renderWordList();
+            updateUI();
+            setupEventListeners();
+        }
+        
+        // Render word list
+        function renderWordList() {
+            wordList.innerHTML = '';
+            
+            vocabulary.forEach((word, index) => {
+                const wordItem = document.createElement('div');
+                wordItem.className = 'word-item';
+                wordItem.innerHTML = `
+                    <div class="word-details">
+                        <div class="korean-word">${word.korean}</div>
+                        <div class="english-meaning">${word.english}</div>
+                        <div class="example">${word.example}</div>
+                        <div class="example-translation">${word.exampleTranslation}</div>
+                    </div>
+                    <div class="word-number">${index + 1}</div>
+                `;
+                wordList.appendChild(wordItem);
+            });
+        }
+        
+        // Update UI text based on current language
+        function updateUI() {
+            const text = uiText[currentLang];
+            
+            appTitle.textContent = text.appTitle;
+            wordListTitle.textContent = text.wordListTitle;
+            instructionsTitle.textContent = text.instructionsTitle;
+            instructionsStep1.textContent = text.instructionsStep1;
+            instructionsDesc1.textContent = text.instructionsDesc1;
+            instructionsStep2.textContent = text.instructionsStep2;
+            instructionsDesc2.textContent = text.instructionsDesc2;
+            instructionsStep3.textContent = text.instructionsStep3;
+            instructionsDesc3.textContent = text.instructionsDesc3;
+            instructionsStep4.textContent = text.instructionsStep4;
+            instructionsDesc4.textContent = text.instructionsDesc4;
+            instructionsStep5.textContent = text.instructionsStep5;
+            instructionsDesc5.textContent = text.instructionsDesc5;
+            quizTitle.textContent = text.quizTitle;
+            scoreText.textContent = text.scoreText;
+            hintText.textContent = text.hintText;
+            nextText.textContent = text.nextText;
+            restartText.textContent = text.restartText;
+            resultTitle.textContent = text.resultTitle;
+            resultMessage.textContent = text.resultMessage;
+            footerText.textContent = text.footerText;
+            
+            // Update button text based on quiz state
+            if (!quizStarted) {
+                nextText.textContent = text.startText;
+                nextBtn.disabled = false;
+            }
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Language switch
+            langKoBtn.addEventListener('click', () => switchLanguage('ko'));
+            langEnBtn.addEventListener('click', () => switchLanguage('en'));
+            
+            // Theme toggle
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Quiz controls
+            hintBtn.addEventListener('click', showHint);
+            nextBtn.addEventListener('click', handleNextButton);
+            restartBtn.addEventListener('click', restartQuiz);
+        }
+        
+        // Switch language
+        function switchLanguage(lang) {
+            currentLang = lang;
+            
+            // Update language buttons
+            if (lang === 'ko') {
+                langKoBtn.classList.add('active');
+                langEnBtn.classList.remove('active');
+            } else {
+                langEnBtn.classList.add('active');
+                langKoBtn.classList.remove('active');
+            }
+            
+            // Update UI text
+            updateUI();
+            
+            // Update quiz if it's in progress
+            if (quizStarted) {
+                updateQuestion();
+            }
+        }
+        
+        // Toggle dark/light mode
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.classList.remove('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+        
+        // Start quiz
+        function startQuiz() {
+            quizStarted = true;
+            score = 0;
+            currentQuestionIndex = 0;
+            usedIndices = [];
+            
+            // Update UI
+            nextText.textContent = uiText[currentLang].nextText;
+            scoreValue.textContent = '0';
+            quizProgress.style.width = '0%';
+            quizResult.classList.remove('show');
+            
+            // Generate first question
+            generateQuestion();
+        }
+        
+        // Generate a new question
+        function generateQuestion() {
+            // Get a random word that hasn't been used yet
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * vocabulary.length);
+            } while (usedIndices.includes(randomIndex) && usedIndices.length < vocabulary.length);
+            
+            usedIndices.push(randomIndex);
+            const correctWord = vocabulary[randomIndex];
+            
+            // Generate 3 other random options
+            const options = [correctWord.english];
+            while (options.length < 4) {
+                const randomWord = vocabulary[Math.floor(Math.random() * vocabulary.length)];
+                if (!options.includes(randomWord.english)) {
+                    options.push(randomWord.english);
+                }
+            }
+            
+            // Shuffle options
+            currentOptions = shuffleArray(options);
+            const correctAnswerIndex = currentOptions.indexOf(correctWord.english);
+            
+            // Update question display
+            updateQuestion(correctWord, correctAnswerIndex);
+            
+            // Update progress
+            updateProgress();
+        }
+        
+        // Update question display
+        function updateQuestion(correctWord = null, correctAnswerIndex = null) {
+            if (!correctWord) {
+                questionText.textContent = uiText[currentLang].questionStart;
+                quizOptions.innerHTML = '';
+                return;
+            }
+            
+            const text = uiText[currentLang];
+            questionText.innerHTML = `<strong>${text.questionFormat}</strong><br>"<span class="highlight">${correctWord.korean}</span>"`;
+            
+            // Clear previous options
+            quizOptions.innerHTML = '';
+            
+            // Create option buttons
+            currentOptions.forEach((option, index) => {
+                const optionBtn = document.createElement('div');
+                optionBtn.className = 'quiz-option';
+                optionBtn.textContent = option;
+                optionBtn.dataset.index = index;
+                optionBtn.dataset.correct = index === correctAnswerIndex;
+                
+                optionBtn.addEventListener('click', () => selectOption(optionBtn, index === correctAnswerIndex, correctWord.english));
+                
+                quizOptions.appendChild(optionBtn);
+            });
+            
+            // Reset button states
+            hintBtn.disabled = false;
+            nextBtn.disabled = true;
+        }
+        
+        // Select an option
+        function selectOption(optionBtn, isCorrect, correctAnswer) {
+            // Disable all options
+            const allOptions = document.querySelectorAll('.quiz-option');
+            allOptions.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+            
+            // Mark correct/incorrect
+            if (isCorrect) {
+                optionBtn.classList.add('correct');
+                score++;
+                scoreValue.textContent = score;
+                
+                // Show correct message
+                showMessage(uiText[currentLang].correctAnswer, 'success');
+            } else {
+                optionBtn.classList.add('incorrect');
+                
+                // Highlight correct option
+                allOptions.forEach(opt => {
+                    if (opt.dataset.correct === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+                
+                // Show wrong message
+                showMessage(`${uiText[currentLang].wrongAnswer} "${correctAnswer}"`, 'error');
+            }
+            
+            // Enable next button
+            nextBtn.disabled = false;
+        }
+        
+        // Show a message
+        function showMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+            messageDiv.style.cssText = `
+                padding: 15px;
+                margin-top: 20px;
+                border-radius: 12px;
+                text-align: center;
+                font-weight: 600;
+                background-color: ${type === 'success' ? 'rgba(46, 204, 113, 0.2)' : 'rgba(231, 76, 60, 0.2)'};
+                color: ${type === 'success' ? 'var(--success-color)' : 'var(--error-color)'};
+                border: 1px solid ${type === 'success' ? 'var(--success-color)' : 'var(--error-color)'};
+            `;
+            
+            // Remove any existing message
+            const existingMessage = document.querySelector('.message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // Insert after quiz options
+            quizOptions.parentNode.insertBefore(messageDiv, quizOptions.nextSibling);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 3000);
+        }
+        
+        // Show hint
+        function showHint() {
+            if (!quizStarted) return;
+            
+            // Find the current word
+            const currentQuestion = vocabulary[usedIndices[usedIndices.length - 1]];
+            
+            // Show example sentence as hint
+            const hintMessage = currentLang === 'ko' 
+                ? `예문: ${currentQuestion.example}` 
+                : `Example: ${currentQuestion.exampleTranslation}`;
+            
+            showMessage(hintMessage, 'warning');
+            
+            // Disable hint button for this question
+            hintBtn.disabled = true;
+        }
+        
+        // Handle next button click
+        function handleNextButton() {
+            if (!quizStarted) {
+                startQuiz();
+                return;
+            }
+            
+            // Remove any message
+            const message = document.querySelector('.message');
+            if (message) {
+                message.remove();
+            }
+            
+            // Check if quiz is complete
+            if (usedIndices.length >= vocabulary.length) {
+                finishQuiz();
+                return;
+            }
+            
+            // Generate next question
+            currentQuestionIndex++;
+            generateQuestion();
+        }
+        
+        // Update progress bar
+        function updateProgress() {
+            const progress = (usedIndices.length / vocabulary.length) * 100;
+            quizProgress.style.width = `${progress}%`;
+        }
+        
+        // Finish quiz
+        function finishQuiz() {
+            quizStarted = false;
+            
+            // Update result display
+            resultScore.textContent = `${score}/${vocabulary.length}`;
+            
+            // Show result
+            quizResult.classList.add('show');
+            
+            // Update button text
+            nextText.textContent = uiText[currentLang].startText;
+            nextBtn.disabled = false;
+        }
+        
+        // Restart quiz
+        function restartQuiz() {
+            quizResult.classList.remove('show');
+            startQuiz();
+        }
+        
+        // Utility function to shuffle array
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+        
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
