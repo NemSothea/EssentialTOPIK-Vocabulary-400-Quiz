@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korean Vocabulary Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        header {
+            background: linear-gradient(to right, #4b6cb7, #182848);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        h1 i {
+            color: #ffde59;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f1f5f9;
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .stat-box {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4b6cb7;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .quiz-section {
+            width: 100%;
+            display: none;
+        }
+        
+        .quiz-section.active {
+            display: block;
+        }
+        
+        .question-container {
+            background-color: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #4b6cb7;
+        }
+        
+        .question-number {
+            font-size: 0.9rem;
+            color: #4b6cb7;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .question-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+        
+        .korean-word {
+            color: #4b6cb7;
+            font-weight: 800;
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            background-color: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .option:hover {
+            border-color: #4b6cb7;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(75, 108, 183, 0.1);
+        }
+        
+        .option.correct {
+            background-color: #d1fae5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        
+        .option.wrong {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+            color: #7f1d1d;
+        }
+        
+        .option .checkmark {
+            color: transparent;
+            font-size: 1.2rem;
+        }
+        
+        .option.correct .checkmark {
+            color: #10b981;
+        }
+        
+        .option.wrong .checkmark {
+            color: #ef4444;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        button {
+            background-color: #4b6cb7;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        button:hover {
+            background-color: #3a559f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(75, 108, 183, 0.3);
+        }
+        
+        button:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        #results-section {
+            text-align: center;
+            display: none;
+        }
+        
+        .results-container {
+            background-color: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+        
+        .score-display {
+            font-size: 5rem;
+            font-weight: 800;
+            color: #4b6cb7;
+            margin: 20px 0;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 30px;
+        }
+        
+        .vocabulary-list {
+            width: 100%;
+            margin-top: 30px;
+        }
+        
+        .vocabulary-list h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1e293b;
+            font-size: 1.5rem;
+        }
+        
+        .vocabulary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .vocab-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .korean {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #4b6cb7;
+        }
+        
+        .english {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 20px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question-text {
+                font-size: 1.5rem;
+            }
+            
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .vocabulary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .question-container {
+                padding: 20px;
+            }
+            
+            .score-display {
+                font-size: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-language"></i> Korean Vocabulary Quiz</h1>
+            <p class="subtitle">Test your knowledge of Korean vocabulary with this interactive quiz</p>
+        </header>
+        
+        <div class="stats-bar">
+            <div class="stat-box">
+                <div class="stat-value" id="score">0</div>
+                <div class="stat-label">Score</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="current-question">1</div>
+                <div class="stat-label">Question</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="total-questions">15</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Quiz Sections -->
+            <div id="quiz-section-1" class="quiz-section active">
+                <div class="question-container">
+                    <div class="question-number">Question 1 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">동기</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="true">Motive (Motivation)</div>
+                    <div class="option" data-correct="false">Require</div>
+                    <div class="option" data-correct="false">Inappropriate</div>
+                    <div class="option" data-correct="false">Messy (dirty)</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="next-btn-1" onclick="nextQuestion(1)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-2" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 2 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">요구되다</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Motive (Motivation)</div>
+                    <div class="option" data-correct="true">Require</div>
+                    <div class="option" data-correct="false">Inappropriate</div>
+                    <div class="option" data-correct="false">Messy (dirty)</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-2" onclick="prevQuestion(2)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-2" onclick="nextQuestion(2)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-3" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 3 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">부적절하다</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Require</div>
+                    <div class="option" data-correct="false">Messy (dirty)</div>
+                    <div class="option" data-correct="true">Inappropriate</div>
+                    <div class="option" data-correct="false">Motive (Motivation)</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-3" onclick="prevQuestion(3)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-3" onclick="nextQuestion(3)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-4" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 4 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">지저분하다</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Inappropriate</div>
+                    <div class="option" data-correct="true">Messy (dirty)</div>
+                    <div class="option" data-correct="false">Require</div>
+                    <div class="option" data-correct="false">Contrast</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-4" onclick="prevQuestion(4)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-4" onclick="nextQuestion(4)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-5" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 5 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">배비되다</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Conclusion</div>
+                    <div class="option" data-correct="true">Contrast</div>
+                    <div class="option" data-correct="false">Proud</div>
+                    <div class="option" data-correct="false">Exchange</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-5" onclick="prevQuestion(5)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-5" onclick="nextQuestion(5)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-6" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 6 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">결론</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Contrast</div>
+                    <div class="option" data-correct="true">Conclusion</div>
+                    <div class="option" data-correct="false">Proud</div>
+                    <div class="option" data-correct="false">Exchange</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-6" onclick="prevQuestion(6)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-6" onclick="nextQuestion(6)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-7" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 7 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">자랑하다</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Conclusion</div>
+                    <div class="option" data-correct="false">Exchange</div>
+                    <div class="option" data-correct="true">Proud</div>
+                    <div class="option" data-correct="false">Hate</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-7" onclick="prevQuestion(7)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-7" onclick="nextQuestion(7)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-8" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 8 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">교류하다</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Proud</div>
+                    <div class="option" data-correct="false">Hate</div>
+                    <div class="option" data-correct="true">Exchange</div>
+                    <div class="option" data-correct="false">Fight</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-8" onclick="prevQuestion(8)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-8" onclick="nextQuestion(8)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-9" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 9 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">혐오하다</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="true">Hate</div>
+                    <div class="option" data-correct="false">Exchange</div>
+                    <div class="option" data-correct="false">Fight</div>
+                    <div class="option" data-correct="false">Increase</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-9" onclick="prevQuestion(9)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-9" onclick="nextQuestion(9)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-10" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 10 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">싸우다</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Hate</div>
+                    <div class="option" data-correct="true">Fight</div>
+                    <div class="option" data-correct="false">Increase</div>
+                    <div class="option" data-correct="false">Forward</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-10" onclick="prevQuestion(10)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-10" onclick="nextQuestion(10)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-11" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 11 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">늘다</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Fight</div>
+                    <div class="option" data-correct="false">Forward</div>
+                    <div class="option" data-correct="true">Increase</div>
+                    <div class="option" data-correct="false">Confidence</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-11" onclick="prevQuestion(11)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-11" onclick="nextQuestion(11)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-12" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 12 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">앞으로</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Increase</div>
+                    <div class="option" data-correct="false">Confidence</div>
+                    <div class="option" data-correct="true">Forward</div>
+                    <div class="option" data-correct="false">Change</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-12" onclick="prevQuestion(12)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-12" onclick="nextQuestion(12)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-13" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 13 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">자신감</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Forward</div>
+                    <div class="option" data-correct="false">Change</div>
+                    <div class="option" data-correct="true">Confidence</div>
+                    <div class="option" data-correct="false">Need</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-13" onclick="prevQuestion(13)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-13" onclick="nextQuestion(13)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-14" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 14 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">변화하다</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Confidence</div>
+                    <div class="option" data-correct="false">Need</div>
+                    <div class="option" data-correct="true">Change</div>
+                    <div class="option" data-correct="false">Motive (Motivation)</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-14" onclick="prevQuestion(14)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-14" onclick="nextQuestion(14)">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="quiz-section-15" class="quiz-section">
+                <div class="question-container">
+                    <div class="question-number">Question 15 of 15</div>
+                    <div class="question-text">What is the English meaning of <span class="korean-word">필요하다</span>?</div>
+                </div>
+                
+                <div class="options-container">
+                    <div class="option" data-correct="false">Change</div>
+                    <div class="option" data-correct="false">Motive (Motivation)</div>
+                    <div class="option" data-correct="true">Need</div>
+                    <div class="option" data-correct="false">Require</div>
+                </div>
+                
+                <div class="navigation">
+                    <button id="prev-btn-15" onclick="prevQuestion(15)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn-15" onclick="nextQuestion(15)">
+                        Finish Quiz <i class="fas fa-flag-checkered"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Results Section -->
+            <div id="results-section">
+                <div class="results-container">
+                    <h2>Quiz Completed!</h2>
+                    <div class="score-display" id="final-score">0/15</div>
+                    <div class="score-text" id="score-message">Keep practicing to improve your Korean vocabulary!</div>
+                    
+                    <button onclick="restartQuiz()">
+                        <i class="fas fa-redo"></i> Restart Quiz
+                    </button>
+                </div>
+                
+                <div class="vocabulary-list">
+                    <h3>Vocabulary List</h3>
+                    <div class="vocabulary-grid" id="vocab-list">
+                        <!-- Vocabulary items will be dynamically added -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Korean Vocabulary Quiz &copy; 2023 | Practice makes perfect!</p>
+    </footer>
+
+    <script>
+        // Vocabulary data
+        const vocabulary = [
+            { korean: "동기", english: "Motive (Motivation)" },
+            { korean: "요구되다", english: "Require" },
+            { korean: "부적절하다", english: "Inappropriate" },
+            { korean: "지저분하다", english: "Messy (dirty)" },
+            { korean: "배비되다", english: "Contrast" },
+            { korean: "결론", english: "Conclusion" },
+            { korean: "자랑하다", english: "Proud" },
+            { korean: "교류하다", english: "Exchange" },
+            { korean: "혐오하다", english: "Hate" },
+            { korean: "싸우다", english: "Fight" },
+            { korean: "늘다", english: "Increase" },
+            { korean: "앞으로", english: "Forward" },
+            { korean: "자신감", english: "Confidence" },
+            { korean: "변화하다", english: "Change" },
+            { korean: "필요하다", english: "Need" }
+        ];
+
+        // Quiz state
+        let currentQuestion = 1;
+        let score = 0;
+        const totalQuestions = 15;
+        let userAnswers = new Array(totalQuestions).fill(null);
+
+        // Initialize the quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            // Populate the vocabulary list
+            const vocabList = document.getElementById('vocab-list');
+            vocabulary.forEach(item => {
+                const vocabItem = document.createElement('div');
+                vocabItem.className = 'vocab-item';
+                vocabItem.innerHTML = `
+                    <div class="korean">${item.korean}</div>
+                    <div class="english">${item.english}</div>
+                `;
+                vocabList.appendChild(vocabItem);
+            });
+
+            // Set up option click events for all questions
+            for (let i = 1; i <= totalQuestions; i++) {
+                setupQuestionEvents(i);
+            }
+            
+            // Disable all next buttons initially
+            for (let i = 1; i <= totalQuestions; i++) {
+                const nextBtn = document.getElementById(`next-btn-${i}`);
+                if (nextBtn) nextBtn.disabled = true;
+            }
+            
+            updateStats();
+        });
+
+        // Set up events for a question
+        function setupQuestionEvents(questionNum) {
+            const options = document.querySelectorAll(`#quiz-section-${questionNum} .option`);
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // If already answered, don't allow changing
+                    if (userAnswers[questionNum-1] !== null) return;
+                    
+                    // Mark this question as answered
+                    userAnswers[questionNum-1] = this.textContent;
+                    
+                    // Check if correct
+                    const isCorrect = this.getAttribute('data-correct') === 'true';
+                    
+                    // Mark correct/wrong options
+                    options.forEach(opt => {
+                        opt.classList.remove('correct', 'wrong');
+                        if (opt.getAttribute('data-correct') === 'true') {
+                            opt.classList.add('correct');
+                        }
+                    });
+                    
+                    if (!isCorrect) {
+                        this.classList.add('wrong');
+                    }
+                    
+                    // Update score
+                    if (isCorrect) {
+                        score++;
+                        updateStats();
+                    }
+                    
+                    // Enable next button
+                    document.getElementById(`next-btn-${questionNum}`).disabled = false;
+                });
+            });
+        }
+
+        // Navigate to next question
+        function nextQuestion(current) {
+            // Hide current question
+            document.getElementById(`quiz-section-${current}`).classList.remove('active');
+            
+            // If we have more questions, show next one
+            if (current < totalQuestions) {
+                document.getElementById(`quiz-section-${current + 1}`).classList.add('active');
+                currentQuestion = current + 1;
+            } else {
+                // If we've reached the end, show results
+                showResults();
+            }
+            
+            updateStats();
+        }
+
+        // Navigate to previous question
+        function prevQuestion(current) {
+            document.getElementById(`quiz-section-${current}`).classList.remove('active');
+            document.getElementById(`quiz-section-${current - 1}`).classList.add('active');
+            currentQuestion = current - 1;
+            updateStats();
+        }
+
+        // Show results
+        function showResults() {
+            // Hide all quiz sections
+            for (let i = 1; i <= totalQuestions; i++) {
+                document.getElementById(`quiz-section-${i}`).classList.remove('active');
+            }
+            
+            // Show results section
+            document.getElementById('results-section').style.display = 'block';
+            
+            // Calculate and display final score
+            const finalScore = score;
+            document.getElementById('final-score').textContent = `${finalScore}/${totalQuestions}`;
+            
+            // Display score message
+            const scoreMessage = document.getElementById('score-message');
+            const percentage = (finalScore / totalQuestions) * 100;
+            
+            if (percentage >= 90) {
+                scoreMessage.textContent = "Excellent! You're a Korean vocabulary master!";
+            } else if (percentage >= 70) {
+                scoreMessage.textContent = "Great job! You have a good grasp of Korean vocabulary.";
+            } else if (percentage >= 50) {
+                scoreMessage.textContent = "Good effort! Keep practicing to improve.";
+            } else {
+                scoreMessage.textContent = "Keep studying! Practice makes perfect.";
+            }
+        }
+
+        // Restart the quiz
+        function restartQuiz() {
+            // Reset quiz state
+            currentQuestion = 1;
+            score = 0;
+            userAnswers = new Array(totalQuestions).fill(null);
+            
+            // Hide results section
+            document.getElementById('results-section').style.display = 'none';
+            
+            // Show first question
+            for (let i = 1; i <= totalQuestions; i++) {
+                document.getElementById(`quiz-section-${i}`).classList.remove('active');
+                
+                // Reset options styling
+                const options = document.querySelectorAll(`#quiz-section-${i} .option`);
+                options.forEach(option => {
+                    option.classList.remove('correct', 'wrong');
+                });
+                
+                // Disable next buttons
+                const nextBtn = document.getElementById(`next-btn-${i}`);
+                if (nextBtn) nextBtn.disabled = true;
+            }
+            
+            document.getElementById('quiz-section-1').classList.add('active');
+            
+            updateStats();
+        }
+
+        // Update the stats bar
+        function updateStats() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('current-question').textContent = currentQuestion;
+            document.getElementById('total-questions').textContent = totalQuestions;
+        }
+    </script>
+</body>
+</html>
