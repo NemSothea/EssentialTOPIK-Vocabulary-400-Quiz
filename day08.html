@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korean Vocabulary Flashcards with SRS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cbc;
+            --accent-color: #ff7e5f;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --card-bg: #ffffff;
+            --body-bg: #f0f2f5;
+            --text-color: #333333;
+            --border-color: #dee2e6;
+        }
+
+        .dark-mode {
+            --primary-color: #5a7ab5;
+            --secondary-color: #7b9ccc;
+            --accent-color: #ff8e6f;
+            --light-color: #2d3748;
+            --dark-color: #e2e8f0;
+            --card-bg: #1a202c;
+            --body-bg: #12161f;
+            --text-color: #e2e8f0;
+            --border-color: #4a5568;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .dark-mode-btn {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+        }
+
+        .stats-btn {
+            background-color: var(--secondary-color);
+        }
+
+        .reset-btn {
+            background-color: var(--danger-color);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-section {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--border-color);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card-counter {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .vocab-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .vocab-item {
+            padding: 10px;
+            background-color: var(--body-bg);
+            border-radius: 5px;
+            border-left: 4px solid var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vocab-korean {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .vocab-english {
+            color: var(--secondary-color);
+        }
+
+        .vocab-status {
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background-color: var(--border-color);
+        }
+
+        .status-new { background-color: #6c757d; color: white; }
+        .status-learning { background-color: var(--warning-color); color: #212529; }
+        .status-review { background-color: var(--success-color); color: white; }
+        .status-mastered { background-color: var(--primary-color); color: white; }
+
+        .flashcard {
+            text-align: center;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .flashcard-front {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .flashcard-back {
+            background-color: var(--accent-color);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-korean {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .flashcard-english {
+            font-size: 1.5rem;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 576px) {
+            .quiz-options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .quiz-option {
+            padding: 12px;
+            background-color: var(--body-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .quiz-option:hover {
+            background-color: var(--border-color);
+        }
+
+        .quiz-option.correct {
+            background-color: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        .quiz-option.incorrect {
+            background-color: var(--danger-color);
+            color: white;
+            border-color: var(--danger-color);
+        }
+
+        .srs-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .next-review {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-new-indicator { background-color: #6c757d; }
+        .status-learning-indicator { background-color: var(--warning-color); }
+        .status-review-indicator { background-color: var(--success-color); }
+        .status-mastered-indicator { background-color: var(--primary-color); }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close {
+            color: var(--text-color);
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--accent-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--body-bg);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .review-history {
+            margin-top: 20px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .history-word {
+            font-weight: bold;
+        }
+
+        .history-status {
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .flashcard-korean {
+                font-size: 2rem;
+            }
+            
+            .flashcard-english {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-language"></i> Korean Vocabulary Flashcards</h1>
+            <div class="controls">
+                <button class="dark-mode-btn" id="darkModeToggle">
+                    <i class="fas fa-moon"></i> Dark Mode
+                </button>
+                <button class="stats-btn" id="statsBtn">
+                    <i class="fas fa-chart-bar"></i> Stats
+                </button>
+                <button class="reset-btn" id="resetBtn">
+                    <i class="fas fa-redo"></i> Reset
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="card">
+                <h2>Vocabulary List</h2>
+                <div class="progress-section">
+                    <div>Progress: <span id="progressText">0/15</span></div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                <div class="vocab-list" id="vocabList">
+                    <!-- Vocabulary items will be inserted here -->
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Flashcard & Quiz</h2>
+                    <div class="card-counter" id="cardCounter">1/15</div>
+                </div>
+                
+                <div class="flashcard" id="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="flashcard-korean" id="flashcardKorean">입학하다</div>
+                            <div class="flashcard-hint">Click to flip</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="flashcard-english" id="flashcardEnglish">Enter school</div>
+                            <div class="flashcard-hint">Click to flip back</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-section">
+                    <h3>Multiple Choice Quiz</h3>
+                    <p>Select the correct meaning for the Korean word:</p>
+                    <div class="quiz-options" id="quizOptions">
+                        <!-- Quiz options will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="srs-info">
+                    <div>
+                        Status: 
+                        <span class="status-indicator" id="statusIndicator"></span>
+                        <span id="statusText">New</span>
+                    </div>
+                    <div class="next-review" id="nextReview">Next review: Now</div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="againBtn">
+                        <i class="fas fa-times-circle"></i> Again
+                    </button>
+                    <button id="hardBtn">
+                        <i class="fas fa-question-circle"></i> Hard
+                    </button>
+                    <button id="goodBtn">
+                        <i class="fas fa-check-circle"></i> Good
+                    </button>
+                    <button id="easyBtn">
+                        <i class="fas fa-star"></i> Easy
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Korean Vocabulary Flashcards with Spaced Repetition System (SRS) • Words: 15 • Created with JavaScript, HTML5 & CSS</p>
+        </footer>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Learning Statistics</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="stats-grid" id="statsGrid">
+                <!-- Stats will be inserted here -->
+            </div>
+            <div class="review-history">
+                <h3>Recent Reviews</h3>
+                <div id="reviewHistory">
+                    <!-- Review history will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vocabulary data
+        const vocabulary = [
+            { korean: "입학하다", english: "Enter school" },
+            { korean: "깨닫다", english: "Realise" },
+            { korean: "집착하다", english: "Obsess(bedevil)" },
+            { korean: "희망하다", english: "Hope" },
+            { korean: "추구하다", english: "Pursue(follow)" },
+            { korean: "통합", english: "Integration" },
+            { korean: "어울리다", english: "Match" },
+            { korean: "빼다", english: "Remove" },
+            { korean: "비교하다", english: "Compare" },
+            { korean: "적극적", english: "Active" },
+            { korean: "발생하다", english: "Occur" },
+            { korean: "성취", english: "Achievement" },
+            { korean: "개최하다", english: "Hold" },
+            { korean: "신경을 쓰다", english: "Care" },
+            { korean: "조급하다", english: "Impatient" }
+        ];
+
+        // SRS configuration
+        const srsIntervals = {
+            'new': 0,      // New cards (0 days)
+            'learning': 1, // Learning cards (1 day)
+            'review': 3,   // Review cards (3 days)
+            'mastered': 7  // Mastered cards (7 days)
+        };
+
+        // State management
+        let currentCardIndex = 0;
+        let userProgress = [];
+        let darkMode = false;
+
+        // DOM elements
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const statsBtn = document.getElementById('statsBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const vocabList = document.getElementById('vocabList');
+        const progressText = document.getElementById('progressText');
+        const progressFill = document.getElementById('progressFill');
+        const flashcard = document.getElementById('flashcard');
+        const flashcardKorean = document.getElementById('flashcardKorean');
+        const flashcardEnglish = document.getElementById('flashcardEnglish');
+        const cardCounter = document.getElementById('cardCounter');
+        const quizOptions = document.getElementById('quizOptions');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const statusText = document.getElementById('statusText');
+        const nextReview = document.getElementById('nextReview');
+        const againBtn = document.getElementById('againBtn');
+        const hardBtn = document.getElementById('hardBtn');
+        const goodBtn = document.getElementById('goodBtn');
+        const easyBtn = document.getElementById('easyBtn');
+        const statsModal = document.getElementById('statsModal');
+        const closeModal = document.querySelector('.close');
+        const statsGrid = document.getElementById('statsGrid');
+        const reviewHistory = document.getElementById('reviewHistory');
+
+        // Initialize the app
+        function init() {
+            loadProgress();
+            renderVocabList();
+            renderCard();
+            setupEventListeners();
+            updateProgress();
+        }
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('koreanVocabProgress');
+            
+            if (savedProgress) {
+                userProgress = JSON.parse(savedProgress);
+            } else {
+                // Initialize progress for all words
+                userProgress = vocabulary.map(word => ({
+                    korean: word.korean,
+                    english: word.english,
+                    status: 'new', // new, learning, review, mastered
+                    nextReview: new Date().toISOString(),
+                    correctAnswers: 0,
+                    totalAnswers: 0,
+                    lastReviewed: null
+                }));
+                saveProgress();
+            }
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            localStorage.setItem('koreanVocabProgress', JSON.stringify(userProgress));
+        }
+
+        // Render vocabulary list
+        function renderVocabList() {
+            vocabList.innerHTML = '';
+            
+            userProgress.forEach((word, index) => {
+                const vocabItem = document.createElement('div');
+                vocabItem.className = 'vocab-item';
+                if (index === currentCardIndex) {
+                    vocabItem.style.borderLeftColor = 'var(--accent-color)';
+                }
+                
+                const statusClass = `status-${word.status}`;
+                
+                vocabItem.innerHTML = `
+                    <div>
+                        <div class="vocab-korean">${word.korean}</div>
+                        <div class="vocab-english">${word.english}</div>
+                    </div>
+                    <div class="vocab-status ${statusClass}">${word.status}</div>
+                `;
+                
+                vocabItem.addEventListener('click', () => {
+                    currentCardIndex = index;
+                    renderCard();
+                    renderVocabList();
+                });
+                
+                vocabList.appendChild(vocabItem);
+            });
+        }
+
+        // Render current flashcard and quiz
+        function renderCard() {
+            const currentWord = userProgress[currentCardIndex];
+            
+            // Update flashcard
+            flashcardKorean.textContent = currentWord.korean;
+            flashcardEnglish.textContent = currentWord.english;
+            
+            // Update counter
+            cardCounter.textContent = `${currentCardIndex + 1}/${vocabulary.length}`;
+            
+            // Update status indicator
+            statusIndicator.className = `status-indicator status-${currentWord.status}-indicator`;
+            statusText.textContent = currentWord.status.charAt(0).toUpperCase() + currentWord.status.slice(1);
+            
+            // Update next review time
+            const nextReviewDate = new Date(currentWord.nextReview);
+            const now = new Date();
+            const diffTime = nextReviewDate - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays <= 0) {
+                nextReview.textContent = 'Next review: Now';
+            } else if (diffDays === 1) {
+                nextReview.textContent = 'Next review: Tomorrow';
+            } else {
+                nextReview.textContent = `Next review: In ${diffDays} days`;
+            }
+            
+            // Generate quiz options
+            generateQuizOptions(currentWord);
+            
+            // Reset flashcard flip state
+            flashcard.classList.remove('flipped');
+        }
+
+        // Generate multiple choice quiz options
+        function generateQuizOptions(currentWord) {
+            // Clear previous options
+            quizOptions.innerHTML = '';
+            
+            // Create an array with the correct answer and 3 random wrong answers
+            const options = [currentWord.english];
+            
+            // Get 3 random wrong answers from other words
+            const wrongOptions = vocabulary
+                .filter(word => word.english !== currentWord.english)
+                .map(word => word.english)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3);
+            
+            options.push(...wrongOptions);
+            
+            // Shuffle the options
+            shuffleArray(options);
+            
+            // Create option elements
+            options.forEach(option => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'quiz-option';
+                optionElement.textContent = option;
+                
+                optionElement.addEventListener('click', () => {
+                    // Check if answer is correct
+                    const isCorrect = option === currentWord.english;
+                    
+                    // Disable all options
+                    document.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.style.pointerEvents = 'none';
+                        if (opt.textContent === currentWord.english) {
+                            opt.classList.add('correct');
+                        } else if (opt === optionElement && !isCorrect) {
+                            opt.classList.add('incorrect');
+                        }
+                    });
+                    
+                    // Update progress
+                    userProgress[currentCardIndex].totalAnswers++;
+                    if (isCorrect) {
+                        userProgress[currentCardIndex].correctAnswers++;
+                    }
+                    
+                    // Auto-advance after a delay if answer is correct
+                    if (isCorrect) {
+                        setTimeout(() => {
+                            nextCard();
+                        }, 1500);
+                    }
+                    
+                    saveProgress();
+                    updateProgress();
+                });
+                
+                quizOptions.appendChild(optionElement);
+            });
+        }
+
+        // Shuffle array (Fisher-Yates algorithm)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Update SRS status based on user response
+        function updateSRS(response) {
+            const word = userProgress[currentCardIndex];
+            const now = new Date();
+            
+            // Update last reviewed
+            word.lastReviewed = now.toISOString();
+            
+            // Update status based on response
+            if (response === 'again') {
+                word.status = 'new';
+                word.nextReview = now.toISOString();
+            } else if (response === 'hard') {
+                if (word.status === 'new') word.status = 'learning';
+                else if (word.status === 'learning') word.status = 'review';
+                word.nextReview = addDays(now, srsIntervals[word.status]).toISOString();
+            } else if (response === 'good') {
+                if (word.status === 'new') word.status = 'learning';
+                else if (word.status === 'learning') word.status = 'review';
+                else if (word.status === 'review') word.status = 'mastered';
+                word.nextReview = addDays(now, srsIntervals[word.status]).toISOString();
+            } else if (response === 'easy') {
+                word.status = 'mastered';
+                word.nextReview = addDays(now, srsIntervals[word.status]).toISOString();
+            }
+            
+            saveProgress();
+            renderVocabList();
+            updateProgress();
+            nextCard();
+        }
+
+        // Helper function to add days to a date
+        function addDays(date, days) {
+            const result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
+        // Move to next card
+        function nextCard() {
+            // Reset quiz options
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.style.pointerEvents = 'auto';
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            // Move to next card
+            currentCardIndex = (currentCardIndex + 1) % vocabulary.length;
+            renderCard();
+            renderVocabList();
+        }
+
+        // Update progress display
+        function updateProgress() {
+            const masteredCount = userProgress.filter(word => word.status === 'mastered').length;
+            const progressPercentage = (masteredCount / vocabulary.length) * 100;
+            
+            progressText.textContent = `${masteredCount}/${vocabulary.length}`;
+            progressFill.style.width = `${progressPercentage}%`;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Dark mode toggle
+            darkModeToggle.addEventListener('click', () => {
+                darkMode = !darkMode;
+                document.body.classList.toggle('dark-mode', darkMode);
+                darkModeToggle.innerHTML = darkMode 
+                    ? '<i class="fas fa-sun"></i> Light Mode' 
+                    : '<i class="fas fa-moon"></i> Dark Mode';
+            });
+
+            // Flashcard flip
+            flashcard.addEventListener('click', () => {
+                flashcard.classList.toggle('flipped');
+            });
+
+            // SRS buttons
+            againBtn.addEventListener('click', () => updateSRS('again'));
+            hardBtn.addEventListener('click', () => updateSRS('hard'));
+            goodBtn.addEventListener('click', () => updateSRS('good'));
+            easyBtn.addEventListener('click', () => updateSRS('easy'));
+
+            // Stats modal
+            statsBtn.addEventListener('click', showStats);
+            closeModal.addEventListener('click', () => {
+                statsModal.style.display = 'none';
+            });
+
+            // Reset button
+            resetBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                    localStorage.removeItem('koreanVocabProgress');
+                    location.reload();
+                }
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', (event) => {
+                if (event.target === statsModal) {
+                    statsModal.style.display = 'none';
+                }
+            });
+        }
+
+        // Show statistics modal
+        function showStats() {
+            // Calculate stats
+            const totalWords = userProgress.length;
+            const newWords = userProgress.filter(word => word.status === 'new').length;
+            const learningWords = userProgress.filter(word => word.status === 'learning').length;
+            const reviewWords = userProgress.filter(word => word.status === 'review').length;
+            const masteredWords = userProgress.filter(word => word.status === 'mastered').length;
+            
+            const totalAnswers = userProgress.reduce((sum, word) => sum + word.totalAnswers, 0);
+            const correctAnswers = userProgress.reduce((sum, word) => sum + word.correctAnswers, 0);
+            const accuracy = totalAnswers > 0 ? Math.round((correctAnswers / totalAnswers) * 100) : 0;
+            
+            // Update stats grid
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${totalWords}</div>
+                    <div class="stat-label">Total Words</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${masteredWords}</div>
+                    <div class="stat-label">Mastered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${reviewWords}</div>
+                    <div class="stat-label">To Review</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${accuracy}%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+            `;
+            
+            // Update review history
+            const reviewedWords = userProgress
+                .filter(word => word.lastReviewed)
+                .sort((a, b) => new Date(b.lastReviewed) - new Date(a.lastReviewed))
+                .slice(0, 10);
+            
+            reviewHistory.innerHTML = '';
+            
+            if (reviewedWords.length > 0) {
+                reviewedWords.forEach(word => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    const statusClass = `status-${word.status}`;
+                    
+                    historyItem.innerHTML = `
+                        <div class="history-word">${word.korean}</div>
+                        <div>
+                            <span class="history-status ${statusClass}">${word.status}</span>
+                            <span>${new Date(word.lastReviewed).toLocaleDateString()}</span>
+                        </div>
+                    `;
+                    
+                    reviewHistory.appendChild(historyItem);
+                });
+            } else {
+                reviewHistory.innerHTML = '<p>No words reviewed yet.</p>';
+            }
+            
+            // Show modal
+            statsModal.style.display = 'block';
+        }
+
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
