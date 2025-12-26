@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRS Korean Vocabulary Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .dark-mode {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --secondary: #10b981;
+            --danger: #f87171;
+            --warning: #fbbf24;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease, color 0.1s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stats-card {
+            display: flex;
+            gap: 20px;
+            padding: 10px 20px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .mode-toggle {
+            background-color: var(--card-bg);
+            border: none;
+            width: 50px;
+            height: 26px;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+        }
+
+        .mode-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .dark-mode .mode-toggle::after {
+            transform: translateX(24px);
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            main {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .quiz-card, .progress-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .srs-badge {
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .quiz-word {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 30px 0;
+            color: var(--primary);
+            min-height: 60px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .option {
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+            border-color: var(--primary-light);
+        }
+
+        .option.selected {
+            background-color: rgba(79, 70, 229, 0.1);
+            border-color: var(--primary);
+        }
+
+        .option.correct {
+            background-color: rgba(16, 185, 129, 0.15);
+            border-color: var(--secondary);
+        }
+
+        .option.incorrect {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-color: var(--danger);
+        }
+
+        .quiz-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .button-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .button-primary:hover {
+            background-color: var(--primary-light);
+        }
+
+        .button-secondary {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .button-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--border-color);
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .srs-levels {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .level {
+            background-color: var(--bg-color);
+            border-radius: 8px;
+            padding: 12px 5px;
+            text-align: center;
+        }
+
+        .level.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .level-count {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .level-label {
+            font-size: 0.7rem;
+            margin-top: 5px;
+        }
+
+        .word-list {
+            margin-top: 30px;
+        }
+
+        .word-list-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .word-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background-color: var(--bg-color);
+        }
+
+        .word-korean {
+            font-weight: 600;
+        }
+
+        .word-meaning {
+            color: var(--text-secondary);
+        }
+
+        .word-level {
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            background-color: var(--border-color);
+        }
+
+        .feedback {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--secondary);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            display: block;
+        }
+
+        .instructions {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(79, 70, 229, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .instructions strong {
+            color: var(--text-color);
+        }
+
+        @media (max-width: 768px) {
+            .stats-card {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .quiz-word {
+                font-size: 1.8rem;
+            }
+            
+            .srs-levels {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+            
+            .controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-language"></i>
+                <span>Korean Vocabulary SRS</span>
+            </div>
+            <div class="controls">
+                <div class="stats-card">
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-words">15</div>
+                        <div class="stat-label">Total Words</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="mastered-words">0</div>
+                        <div class="stat-label">Mastered</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="streak-count">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                </div>
+                <button class="mode-toggle" id="mode-toggle" aria-label="Toggle dark mode"></button>
+            </div>
+        </header>
+
+        <main>
+            <section class="quiz-card">
+                <div class="quiz-header">
+                    <div class="quiz-title">Vocabulary Quiz</div>
+                    <div class="srs-badge">SRS Level: <span id="current-level">1</span></div>
+                </div>
+                
+                <div class="quiz-word" id="current-word">자발적</div>
+                
+                <div class="quiz-options" id="options-container">
+                    <!-- Options will be generated by JavaScript -->
+                </div>
+                
+                <div class="feedback" id="feedback-message"></div>
+                
+                <div class="quiz-footer">
+                    <button class="button button-secondary" id="hint-button">
+                        <i class="fas fa-lightbulb"></i> Show Hint
+                    </button>
+                    <button class="button button-primary" id="submit-button" disabled>
+                        Submit Answer
+                    </button>
+                    <button class="button button-primary" id="next-button" style="display: none;">
+                        Next Word <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                
+                <div class="instructions">
+                    <strong>SRS Instructions:</strong> Words you answer correctly move to higher SRS levels and appear less frequently. Words you get wrong reset to level 1 for more frequent review.
+                </div>
+            </section>
+            
+            <section class="progress-card">
+                <div class="progress-title">Spaced Repetition Progress</div>
+                
+                <div class="progress-info">
+                    <span>Session Progress</span>
+                    <span id="progress-text">0/15</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                
+                <div class="progress-info">
+                    <span>SRS Distribution</span>
+                </div>
+                <div class="srs-levels" id="srs-levels">
+                    <!-- SRS levels will be generated by JavaScript -->
+                </div>
+                
+                <div class="word-list">
+                    <div class="word-list-title">Your Vocabulary List</div>
+                    <div id="word-list-container">
+                        <!-- Word list will be generated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Vocabulary data
+        const vocabulary = [
+            { korean: "자발적", meaning: "Voluntary", level: 1, lastReviewed: null },
+            { korean: "충돌", meaning: "Collision(crash)", level: 1, lastReviewed: null },
+            { korean: "요소", meaning: "Element(component)", level: 1, lastReviewed: null },
+            { korean: "프로젝트", meaning: "Project", level: 1, lastReviewed: null },
+            { korean: "축소하다", meaning: "Reduce", level: 1, lastReviewed: null },
+            { korean: "무료", meaning: "Free", level: 1, lastReviewed: null },
+            { korean: "새선하다", meaning: "Improve", level: 1, lastReviewed: null },
+            { korean: "저해하다", meaning: "Hinder(Prevent)", level: 1, lastReviewed: null },
+            { korean: "줄다", meaning: "Decrease", level: 1, lastReviewed: null },
+            { korean: "법칙", meaning: "Law", level: 1, lastReviewed: null },
+            { korean: "인정하다", meaning: "Recognize", level: 1, lastReviewed: null },
+            { korean: "과시하다", meaning: "Show off(Display)", level: 1, lastReviewed: null },
+            { korean: "시행하다", meaning: "Implement", level: 1, lastReviewed: null },
+            { korean: "참가하다", meaning: "Join", level: 1, lastReviewed: null },
+            { korean: "불안하다", meaning: "Anxious(worried)", level: 1, lastReviewed: null }
+        ];
+
+        // Spaced Repetition intervals (in days)
+        const srsIntervals = [1, 3, 7, 14, 30];
+        
+        // DOM elements
+        const currentWordElement = document.getElementById('current-word');
+        const optionsContainer = document.getElementById('options-container');
+        const submitButton = document.getElementById('submit-button');
+        const nextButton = document.getElementById('next-button');
+        const hintButton = document.getElementById('hint-button');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const srsLevelsContainer = document.getElementById('srs-levels');
+        const wordListContainer = document.getElementById('word-list-container');
+        const totalWordsElement = document.getElementById('total-words');
+        const masteredWordsElement = document.getElementById('mastered-words');
+        const streakCountElement = document.getElementById('streak-count');
+        const currentLevelElement = document.getElementById('current-level');
+        const modeToggle = document.getElementById('mode-toggle');
+        
+        // Quiz state variables
+        let currentWordIndex = 0;
+        let selectedOption = null;
+        let score = 0;
+        let totalReviewed = 0;
+        let sessionWords = [];
+        let streak = parseInt(localStorage.getItem('vocabStreak')) || 0;
+        let lastStudyDate = localStorage.getItem('lastStudyDate');
+        
+        // Initialize the application
+        function init() {
+            // Check and update streak
+            updateStreak();
+            
+            // Set total words count
+            totalWordsElement.textContent = vocabulary.length;
+            
+            // Initialize SRS levels display
+            renderSRSLevels();
+            
+            // Initialize word list
+            renderWordList();
+            
+            // Prepare session words (all words at level 1 or due for review)
+            prepareSessionWords();
+            
+            // Start the quiz
+            loadNextWord();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Update progress display
+            updateProgress();
+        }
+        
+        // Update study streak
+        function updateStreak() {
+            const today = new Date().toDateString();
+            
+            if (lastStudyDate !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                if (lastStudyDate === yesterday.toDateString()) {
+                    streak++;
+                } else {
+                    streak = 1;
+                }
+                
+                localStorage.setItem('vocabStreak', streak);
+                localStorage.setItem('lastStudyDate', today);
+            }
+            
+            streakCountElement.textContent = streak;
+        }
+        
+        // Prepare words for this study session
+        function prepareSessionWords() {
+            // In a real SRS system, we would filter words based on their review schedule
+            // For this demo, we'll include all words at level 1 and some at higher levels
+            sessionWords = [...vocabulary];
+            
+            // Shuffle the words for the session
+            shuffleArray(sessionWords);
+        }
+        
+        // Load the next word in the quiz
+        function loadNextWord() {
+            if (currentWordIndex >= sessionWords.length) {
+                endQuiz();
+                return;
+            }
+            
+            const currentWord = sessionWords[currentWordIndex];
+            currentWordElement.textContent = currentWord.korean;
+            currentLevelElement.textContent = currentWord.level;
+            
+            // Reset UI state
+            selectedOption = null;
+            submitButton.disabled = true;
+            submitButton.style.display = 'block';
+            nextButton.style.display = 'none';
+            feedbackMessage.style.display = 'none';
+            feedbackMessage.className = 'feedback';
+            
+            // Clear previous options
+            optionsContainer.innerHTML = '';
+            
+            // Create options (correct answer + 3 random wrong answers)
+            const options = [currentWord.meaning];
+            
+            // Get 3 random wrong answers
+            const otherWords = vocabulary.filter(word => word.korean !== currentWord.korean);
+            shuffleArray(otherWords);
+            
+            for (let i = 0; i < 3 && i < otherWords.length; i++) {
+                options.push(otherWords[i].meaning);
+            }
+            
+            // Shuffle the options
+            shuffleArray(options);
+            
+            // Create option elements
+            options.forEach(option => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                
+                optionElement.addEventListener('click', () => {
+                    if (submitButton.style.display === 'block') {
+                        // Remove selected class from all options
+                        document.querySelectorAll('.option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        
+                        // Add selected class to clicked option
+                        optionElement.classList.add('selected');
+                        selectedOption = option;
+                        submitButton.disabled = false;
+                    }
+                });
+                
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Update progress
+            updateProgress();
+        }
+        
+        // Submit the answer
+        function submitAnswer() {
+            if (selectedOption === null) return;
+            
+            const currentWord = sessionWords[currentWordIndex];
+            const isCorrect = selectedOption === currentWord.meaning;
+            
+            // Update word level based on answer (SRS logic)
+            if (isCorrect) {
+                // Move word to next SRS level
+                if (currentWord.level < 5) {
+                    currentWord.level++;
+                }
+                feedbackMessage.textContent = `Correct! "${currentWord.korean}" means "${currentWord.meaning}"`;
+                feedbackMessage.classList.add('correct');
+                score++;
+            } else {
+                // Reset word to level 1 for more frequent review
+                currentWord.level = 1;
+                feedbackMessage.textContent = `Incorrect. "${currentWord.korean}" means "${currentWord.meaning}"`;
+                feedbackMessage.classList.add('incorrect');
+            }
+            
+            // Update last reviewed date
+            currentWord.lastReviewed = new Date().toISOString();
+            
+            // Show feedback
+            feedbackMessage.style.display = 'block';
+            
+            // Highlight correct and incorrect options
+            document.querySelectorAll('.option').forEach(option => {
+                if (option.textContent === currentWord.meaning) {
+                    option.classList.add('correct');
+                } else if (option.textContent === selectedOption && !isCorrect) {
+                    option.classList.add('incorrect');
+                }
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Update stats
+            totalReviewed++;
+            updateStats();
+            renderSRSLevels();
+            renderWordList();
+            
+            // Show next button
+            submitButton.style.display = 'none';
+            nextButton.style.display = 'block';
+        }
+        
+        // Move to the next word
+        function nextWord() {
+            currentWordIndex++;
+            loadNextWord();
+        }
+        
+        // Show a hint for the current word
+        function showHint() {
+            const currentWord = sessionWords[currentWordIndex];
+            alert(`Hint: This word starts with "${currentWord.korean.charAt(0)}" and has ${currentWord.korean.length} characters.`);
+        }
+        
+        // End the quiz
+        function endQuiz() {
+            currentWordElement.textContent = "Quiz Complete!";
+            optionsContainer.innerHTML = `<div style="text-align: center; padding: 30px; color: var(--text-secondary);">
+                <h3>You've completed this session!</h3>
+                <p>You got ${score} out of ${sessionWords.length} words correct.</p>
+                <p>Words will reappear based on their SRS levels.</p>
+                <button class="button button-primary" id="restart-button" style="margin-top: 20px;">
+                    <i class="fas fa-redo"></i> Practice Again
+                </button>
+            </div>`;
+            
+            submitButton.style.display = 'none';
+            nextButton.style.display = 'none';
+            feedbackMessage.style.display = 'none';
+            
+            // Add event listener for restart button
+            document.getElementById('restart-button').addEventListener('click', restartQuiz);
+        }
+        
+        // Restart the quiz
+        function restartQuiz() {
+            currentWordIndex = 0;
+            score = 0;
+            totalReviewed = 0;
+            
+            // Reset all words to level 1 for demo purposes
+            // In a real app, you would preserve the SRS levels
+            vocabulary.forEach(word => {
+                word.level = 1;
+            });
+            
+            prepareSessionWords();
+            loadNextWord();
+            updateStats();
+            renderSRSLevels();
+            renderWordList();
+        }
+        
+        // Update progress display
+        function updateProgress() {
+            const progressPercent = (currentWordIndex / sessionWords.length) * 100;
+            progressFill.style.width = `${progressPercent}%`;
+            progressText.textContent = `${currentWordIndex}/${sessionWords.length}`;
+        }
+        
+        // Update statistics display
+        function updateStats() {
+            // Calculate mastered words (level 5)
+            const masteredCount = vocabulary.filter(word => word.level === 5).length;
+            masteredWordsElement.textContent = masteredCount;
+        }
+        
+        // Render SRS levels distribution
+        function renderSRSLevels() {
+            srsLevelsContainer.innerHTML = '';
+            
+            // Count words at each level
+            const levelCounts = [0, 0, 0, 0, 0];
+            vocabulary.forEach(word => {
+                if (word.level >= 1 && word.level <= 5) {
+                    levelCounts[word.level - 1]++;
+                }
+            });
+            
+            // Create level elements
+            for (let i = 0; i < 5; i++) {
+                const levelElement = document.createElement('div');
+                levelElement.className = 'level';
+                if (i === 0) levelElement.classList.add('active');
+                
+                levelElement.innerHTML = `
+                    <div class="level-count">${levelCounts[i]}</div>
+                    <div class="level-label">Level ${i+1}</div>
+                `;
+                
+                srsLevelsContainer.appendChild(levelElement);
+            }
+        }
+        
+        // Render the word list
+        function renderWordList() {
+            wordListContainer.innerHTML = '';
+            
+            // Sort vocabulary by level (descending) and then alphabetically
+            const sortedVocabulary = [...vocabulary].sort((a, b) => {
+                if (b.level !== a.level) {
+                    return b.level - a.level;
+                }
+                return a.korean.localeCompare(b.korean);
+            });
+            
+            // Create word items
+            sortedVocabulary.forEach(word => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-item';
+                
+                wordElement.innerHTML = `
+                    <div>
+                        <div class="word-korean">${word.korean}</div>
+                        <div class="word-meaning">${word.meaning}</div>
+                    </div>
+                    <div class="word-level">Level ${word.level}</div>
+                `;
+                
+                wordListContainer.appendChild(wordElement);
+            });
+        }
+        
+        // Set up event listeners
+        function setupEventListeners() {
+            submitButton.addEventListener('click', submitAnswer);
+            nextButton.addEventListener('click', nextWord);
+            hintButton.addEventListener('click', showHint);
+            
+            // Dark mode toggle
+            modeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                
+                // Save preference to localStorage
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDarkMode);
+            });
+            
+            // Check for saved dark mode preference
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (savedDarkMode) {
+                document.body.classList.add('dark-mode');
+            }
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Number keys 1-4 for selecting options
+                if (e.key >= '1' && e.key <= '4' && submitButton.style.display === 'block') {
+                    const options = document.querySelectorAll('.option');
+                    const index = parseInt(e.key) - 1;
+                    
+                    if (index < options.length) {
+                        options[index].click();
+                    }
+                }
+                
+                // Enter to submit or go to next word
+                if (e.key === 'Enter') {
+                    if (submitButton.style.display === 'block' && !submitButton.disabled) {
+                        submitButton.click();
+                    } else if (nextButton.style.display === 'block') {
+                        nextButton.click();
+                    }
+                }
+                
+                // Space for hint
+                if (e.key === ' ' && !e.target.matches('button, input, textarea')) {
+                    e.preventDefault();
+                    hintButton.click();
+                }
+            });
+        }
+        
+        // Utility function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
